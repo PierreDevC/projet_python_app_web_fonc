@@ -1,4 +1,4 @@
-from performance_script import *
+from performance_script import fetch_all_rows
 import sqlite3
 
 with sqlite3.connect('database/database.db') as conn:
