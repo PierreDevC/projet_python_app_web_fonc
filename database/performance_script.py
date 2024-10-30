@@ -4,11 +4,13 @@ conn = sqlite3.connect('database/database.db')
 cur = conn.cursor()
 
 # Affichage plus efficace des produits (gains en performance)
-cur.execute("SELECT nom, categorie, prix FROM produits")
-rows = cur.fetchall()
-for row in rows:
-    print(row)
+def fetch_all_rows(cur):
+    cur.execute("SELECT nom, categorie, prix FROM produits")
+    rows = cur.fetchall()
+    for row in rows:
+        print(row)
 
+fetch_all_rows(cur)
 
 # Mise à jour paramétrée (gains en performance)
 cur.execute("UPDATE produits SET description = ? WHERE nom = ?",
