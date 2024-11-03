@@ -46,18 +46,13 @@ class User:
 
     @staticmethod
     def get_user_by_id(user_id):
-        db = Database("database.db")
-        db.connect()
-        db.execute_query('SELECT * FROM users WHERE id = ?', (user_id,))
-        user_data = db.fetch_one()
-        db.disconnect()
+        with Database() as db:
+            db.execute_query('SELECT * FROM users WHERE id = ?', (user_id,))
+            user_data = db.fetch_one()
+        
         if user_data:
             return User(*user_data)
         return None
     
     def __str__(self):
         return f"User(id={self.id}, username={self.username}, email={self.email}, role={self.role})"
-
-
-
-    

@@ -1,11 +1,5 @@
-import sys
-import os
-
-# Add the parent directory to sys.path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-from classes.database import Database
-from classes.user import User
+from database import Database
+from user import User
 
 db = Database("database.db")  
 try:
