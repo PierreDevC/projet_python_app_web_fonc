@@ -107,36 +107,45 @@ def main():
     db.execute_query(create_users_table)
 
     
+    # Insertion des données initiales pour chaque table
+    initial_supplier_query = '''INSERT INTO suppliers (name, contact, email, phone) VALUES (?, ?, ?, ?)'''
+    suppliers_data = [
+        ('TechSupply Inc.', 'John Doe', 'john@techsupply.com', '+1234567890'), 
+        ('Gadget World', 'Jane Smith', 'jane@gadgetworld.com', '+0987654321')]
+    for supplier in suppliers_data:
+        db.execute_query(initial_supplier_query, supplier)
 
-
-
-
-
-
-
-
-    # Example of creating a table
-    create_table_query = """
-    CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT, 
-        name TEXT NOT NULL,
-        email TEXT UNIQUE NOT NULL
-    );
-    """
-    db.execute_query(create_table_query)
+    initial_products_query = '''INSERT INTO products (name, category, brand, model, price, description, stock, supplier_id) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
+    products_data = [
+        ('Smartphone X', 'Phone', 'TechBrand', 'X1', 799.99, 'Latest smartphone model', 50, 1),
+        ('Laptop Pro', 'Computer', 'CompTech', 'Pro2', 1299.99, 'High-performance laptop', 30, 2)]
+    for product in products_data:
+        db.execute_query(initial_products_query, product)
     
-    # Example of inserting data
-    insert_query = "INSERT INTO users (name, email) VALUES (?, ?)"
-    db.execute_query(insert_query, ("Alice", "alice@example.com"))
+    initial_clients_query = '''INSERT INTO clients (name, email, phone, address, password) VALUES (?, ?, ?, ?, ?)'''
+    clients_data = [
+        ('Alice Johnson', 'alice@email.com', '+1122334455', '123 Main St, City', 'hashed_password_1'),
+        ('Bob Williams', 'bob@email.com', '+5544332211', '456 Oak Ave, Town', 'hashed_password_2')]
+    for client in clients_data:
+        db.execute_query(initial_clients_query, client)
+
     
-    # Fetch data
+
+    initial_users_query = '''INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)'''
+    users_data = [
+        ('admin_user', 'admin@example.com', 'hashed_admin_password', 'admin'),
+        ('regular_user', 'user@example.com', 'hashed_user_password', 'registered')
+    ]
+    for user in users_data:
+        db.execute_query(initial_users_query, user)
+
+    
     select_query = "SELECT * FROM users"
     users = db.fetch_all(select_query)
     print("Users:", users)
     
-    # Disconnect from the database
     db.disconnect()
 
-# Run the main function
 if __name__ == "__main__":
     main()
