@@ -15,7 +15,7 @@ class Produit:
     
     def creer_table():
         # Création de la table produits
-        with sqlite3.connect("inventaire.db") as conn:
+        with sqlite3.connect("database/database.db") as conn:
             cursor = conn.cursor()
             cursor.execute("""
             CREATE TABLE IF NOT EXISTS produits (
@@ -34,7 +34,7 @@ class Produit:
 
     def ajouter_produit(self):
         # Ajout d'un nouveau produit
-        with sqlite3.connect("inventaire.db") as conn:
+        with sqlite3.connect("database/database.db") as conn:
             cursor = conn.cursor()
             cursor.execute("""
             INSERT INTO produits (nom, categorie, marque, modele, prix, description, stock, date_ajout) 
@@ -45,14 +45,14 @@ class Produit:
     
     def obtenir_produits():
         # Consultation de la liste des produits
-        with sqlite3.connect("inventaire.db") as conn:
+        with sqlite3.connect("database/database.db") as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM produits")
             return cursor.fetchall()
 
     def mettre_a_jour_produit(self, produit_id, **kwargs):
         # Mise à jour des informations d'un produit
-        with sqlite3.connect("inventaire.db") as conn:
+        with sqlite3.connect("database/database.db") as conn:
             cursor = conn.cursor()
             for key, value in kwargs.items():
                 cursor.execute(f"UPDATE produits SET {key} = ? WHERE id = ?", (value, produit_id))
@@ -61,7 +61,7 @@ class Produit:
    
     def supprimer_produit(produit_id):
         # Suppression d'un produit
-        with sqlite3.connect("inventaire.db") as conn:
+        with sqlite3.connect("database/database.db") as conn:
             cursor = conn.cursor()
             cursor.execute("DELETE FROM produits WHERE id = ?", (produit_id,))
             conn.commit()
