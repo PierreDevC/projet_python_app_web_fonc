@@ -1,1 +1,0 @@
-# Classe pour la table produits (products)
