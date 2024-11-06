@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table border="1">
+        <thead>
+            <td>Name</td>
+            <td>Type</td>
+            <td>Category</td>
+            <td>Brand</td>
+            <td>Price</td>
+            <td>Stock</td>
+            <td>Description</td>
+        </thead>
+
+        {% for row in rows %}
+        <tr>
+            <td>{{row['name']}}</td>
+            <td>{{row['type']}}</td>
+            <td>{{row['category']}}</td>
+            <td>{{row['brand']}}</td>
+            <td>{{row['price']}}</td>
+            <td>{{row['stock']}}</td>
+            <td>{{row['description']}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="/" >Go to Home Page</a>
+</body>
+</html>

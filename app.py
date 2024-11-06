@@ -3,7 +3,7 @@ from flask import Flask,render_template, request
 from products import Products
 from users import User
 
-import sqlite3 as sql
+import sqlite3
 
 app = Flask(__name__)
 
@@ -19,18 +19,18 @@ def new_product():
 def addrec():
       if request.method == 'POST':
             try:
-                product_name = request.form['product_name']
-                product_type = request.form['product_type']
-                product_category = request.form['product_category']
-                product_brand = request.form['product_brand']
-                product_price = request.form['product_price']
-                product_stock = request.form['product_stock']
-                product_desc = request.form['product_desc']
+                name = request.form['product_name']
+                type = request.form['product_type']
+                category = request.form['product_category']
+                brand = request.form['product_brand']
+                price = request.form['product_price']
+                stock = request.form['product_stock']
+                desc = request.form['product_desc']
                 
+                # Instance de l'objet de produit
+                new_product = Products(name, type, category, brand, price, stock, desc)
 
-                # ajouter un produit en utilisant la clase produits
-
-                with sql.connect('inventory.db') as conn:
+                with sqlite3.connect('inventory.db') as conn:
                         cursor = conn.cursor()
                         cursor.execute('''
                         CREATE TABLE IF NOT EXISTS products (
@@ -46,16 +46,14 @@ def addrec():
                         )
                         ''')
 
-                        cur.execute(f"INSERT INTO products {product_name}, {product_type}, {product_category}, {product_brand}")
+                        # éviter l'injection sql en utilisant des requêtes paramètrées
+                        sql = "INSERT INTO products (name, type, category, brand, price, stock, description) VALUES (?, ?, ?, ?, ?, ?, ?)"
+                        args = (new_product.name, new_product.type, new_product.category, new_product.brand, new_product.price, new_product.stock, new_product.description)
+                        cursor = conn.execute(sql, args)
+                        conn.commit()
+                        msg = "Product successfully added"
 
-                        product_obj = Products("MacBook Pro", "Laptop", "Productivity", "Apple", 1999.99, 50, "High-performance laptop for professionals")
-
-
-                with sql.connect('inventory.db') as conn:
-                        cur = conn.cursor()
-                        cur.execute("INSERT INTO students (name, addr, city, pin) VALUES (?,?,?,?)")
-
-                        msg = "Record successfully added"
+                        # utiliser add_product
 
             except:
                 conn.rollback()
@@ -65,7 +63,22 @@ def addrec():
                 conn.close()
                 return render_template("result.html", msg=msg)
                 
+                
+@app.route('/list')
+def list():
+        with sqlite3.connect('inventory.db') as conn:
+                conn.row_factory = sqlite3.Row
+                cursor = conn.cursor()
+                cursor.execute('''SELECT * from products''')
+                rows = cursor.fetchall()
+                return render_template("list.html",rows=rows)
 
+                
+
+          
+
+
+        
 
 
 if __name__ == '__main__':
