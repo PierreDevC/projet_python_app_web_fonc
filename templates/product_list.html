@@ -26,7 +26,7 @@
 
 <!-- <a href="/enternew" class="btn btn-primary mb-3">Add New Product</a> -->
 
-<button type="button" class="btn buttons" data-bs-toggle="modal" data-bs-target="#exampleModal">
+<button type="button" class="buttons" data-bs-toggle="modal" data-bs-target="#exampleModal">
     Add New Product
   </button>
 
@@ -58,7 +58,7 @@
                 <td>{{ row['price'] }}</td>
                 <td>{{ row['stock'] }}</td>
                 <td>{{ row['description'] }}</td>
-                <td><a href="{{ url_for('modify_product', product_id=row[0]) }}" class="btn btn-warning">Modify</a></td>
+                <td><a href="{{ url_for('modify_product', product_id=row[0]) }}" class="buttons">Modify</a></td>
 
             </tr>
             {% endfor %}
@@ -69,7 +69,7 @@
     <button type="submit" class="btn btn-danger delete-btn" id="deleteBtn" style="display: none;">Delete Selected Products</button>
 </form>
 
-<a href="/" class="button">Go to Home Page</a>
+<a href="/" class="buttons">Go to Home Page</a>
 
 <!-- Formulaire Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -85,22 +85,35 @@
                 <label for="ProductName" class="form-label">Product Name</label>
                 <input type="text" class="form-control" name="product_name" placeholder="Enter product name">
             </div>
-            <div class="mb-3">
-                <label for="ProductName" class="form-label">Product Category</label>
-                <input type="text" class="form-control" name="product_category" placeholder="Enter product category">
+    <fieldset class="row mb-3">
+        <legend class="col-form-label col-sm-2 pt-0">Product Category</legend>
+        <div class="col-sm-10">
+            <div class="form-check">
+            <input class="form-check-input" type="radio" name="product_category" value="Productivity">
+            <label class="form-check-label" for="Productivity">
+                Productivity
+            </label>
             </div>
+            <div class="form-check">
+            <input class="form-check-input" type="radio" name="product_category" value="Gaming">
+            <label class="form-check-label" for="Gaming">
+                    Gaming
+            </label>
+            </div>
+        </div>
+        </fieldset>
         <fieldset class="row mb-3">
         <legend class="col-form-label col-sm-2 pt-0">Product Type</legend>
         <div class="col-sm-10">
             <div class="form-check">
-            <input class="form-check-input" type="radio" name="product_type" value="laptop">
-            <label class="form-check-label" for="laptop">
+            <input class="form-check-input" type="radio" name="product_type" value="Laptop">
+            <label class="form-check-label" for="Laptop">
                 Laptop
             </label>
             </div>
             <div class="form-check">
-            <input class="form-check-input" type="radio" name="product_type" value="desktop">
-            <label class="form-check-label" for="desktop">
+            <input class="form-check-input" type="radio" name="product_type" value="Desktop">
+            <label class="form-check-label" for="Desktop">
                  Desktop
             </label>
             </div>
@@ -108,16 +121,16 @@
         </fieldset>
         <label for="ProductBrand" class="form-label">Product Brand</label>
         <select class="form-select" name="product_brand" aria-label="Default select example">
-            <option value="1">Acer</option>
-            <option value="2">Apple</option>
-            <option value="3">Asus</option>
-            <option value="4">Dell</option>
-            <option value="5">HP</option>
-            <option value="6">Lenovo</option>
-            <option value="7">Microsoft</option>
-            <option value="8">Samsung</option>
-            <option value="9">Sony</option>
-            <option value="10">Toshiba</option>
+            <option value="Acer">Acer</option>
+            <option value="Apple">Apple</option>
+            <option value="Asus">Asus</option>
+            <option value="Dell">Dell</option>
+            <option value="Dell">Dell</option>
+            <option value="Lenovo">Lenovo</option>
+            <option value="Microsoft">Microsoft</option>
+            <option value="Samsung">Samsung</option>
+            <option value="Sony">Sony</option>
+            <option value="Toshiba">Toshiba</option>
           </select>
         <br>
         <div class="mb-3">
