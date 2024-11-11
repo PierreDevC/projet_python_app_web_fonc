@@ -18,6 +18,12 @@ class BaseModel:
     __abstract__ = True
 
 
+class Customers:
+    def __init__(self, first_name, last_name, email):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.email = email
+
 
 
 class Products:
@@ -63,3 +69,4 @@ class Products:
     def get_all_products(cursor):
         cursor.execute('SELECT * FROM products')
         return cursor.fetchall()
+    
