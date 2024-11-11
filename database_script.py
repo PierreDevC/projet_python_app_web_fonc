@@ -1,7 +1,7 @@
 # Création/insertion de la table produits
 # Création/insertion de la table users
 
-from products import Products
+from models import Products
 from users import User
 
 import sqlite3

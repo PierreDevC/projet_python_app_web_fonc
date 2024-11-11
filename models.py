@@ -13,6 +13,13 @@ def db_connection(func):
         return result
     return wrapper
 
+
+class BaseModel:
+    __abstract__ = True
+
+
+
+
 class Products:
     def __init__(self, name, type, category, brand, price, stock, description=None):
         self.name = name
