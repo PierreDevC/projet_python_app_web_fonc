@@ -1,10 +1,11 @@
 <!-- templates/list.html -->
 {% extends 'base.html' %}
 
-{% block title %}Product List{% endblock %}
+{% block title %}Products{% endblock %}
 
 {% block content %}
-<h1>Product List</h1>
+<h2 class="text-white">Products</h2>
+<br>
 
 <script>
     function toggleDeleteButton() {
@@ -25,7 +26,7 @@
 
 <!-- <a href="/enternew" class="btn btn-primary mb-3">Add New Product</a> -->
 
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+<button type="button" class="btn buttons" data-bs-toggle="modal" data-bs-target="#exampleModal">
     Add New Product
   </button>
 
