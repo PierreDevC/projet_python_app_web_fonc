@@ -7,10 +7,12 @@ from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt
 from models import Products
+from models import Customers
 import sqlite3
 
 app = Flask(__name__)
 
+# Logique d'authentification
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SECRET_KEY'] = 'thisisasecretkey' #changer le key plus tard
@@ -74,9 +76,21 @@ def login():
     return render_template('login.html', form=form)
 
 @app.route('/dashboard', methods=['GET', 'POST'])
-#@login_required 
+#@login_required #enlever commentaire après l'implémentation de l'authentification
 def dashboard():
-    return render_template('dashboard.html')
+    conn = sqlite3.connect('inventory.db')
+    c = conn.cursor()
+    products = c.execute('SELECT * FROM products LIMIT 5').fetchall()
+    customers = c.execute('SELECT * FROM customers LIMIT 5').fetchall()
+    conn.close()
+
+    return render_template('dashboard.html', products=products, customers=customers)
+
+@app.route('/logout', methods=['GET', 'POST'])
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
 
 @ app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -92,7 +106,7 @@ def register():
     return render_template('register.html', form=form)
 
 
-
+# Logique de produits/customers/orders
 @app.route('/enternew')
 def new_product():
       return render_template('add_product.html')
@@ -102,12 +116,12 @@ def addrec():
       if request.method == 'POST':
             try:
                 name = request.form['product_name']
-                type = request.form.get('product_type')  # Use .get() to avoid KeyError if it's not selected
+                type = request.form.get('product_type')
                 category = request.form['product_category']
                 brand = request.form['product_brand']
                 price = request.form['product_price']
                 stock = request.form['product_stock']
-                desc = request.form['product_desc'] # textarea_content = request.form['textarea_input']
+                desc = request.form['product_desc'] 
                 
                 # Instance de l'objet de produit
                 new_product = Products(name, type, category, brand, price, stock, desc)
@@ -135,7 +149,7 @@ def addrec():
                         conn.commit()
                         msg = "Product successfully added"
 
-                        # utiliser add_product
+                        # utiliser add_product...
 
             except:
                 conn.rollback()
@@ -146,13 +160,11 @@ def addrec():
                 return render_template("result.html", msg=msg)
                 
 
-# Route to display the form to modify a specific product
+'''
 @app.route('/modify/<int:product_id>', methods=['GET'])
 def modify_product(product_id):
-    # Fetch product details using Products class
     product_data = Products.get_product_by_id("inventory.db", product_id)
     if product_data:
-        # Convert to dictionary format for ease of use in template
         product = {
             'id': product_data[0],
             'name': product_data[1],
@@ -169,10 +181,8 @@ def modify_product(product_id):
         return "Product not found", 404
 
 
-# Route to handle product updates
 @app.route('/update_product/<int:product_id>', methods=['POST'])
 def update_product(product_id):
-    # Get updated data from the form
     name = request.form['name']
     product_type = request.form['type']
     category = request.form['category']
@@ -181,22 +191,18 @@ def update_product(product_id):
     stock = request.form['stock']
     description = request.form['description']
     
-    # Create an instance with updated data and set its ID for updating
     updated_product = Products(name, product_type, category, brand, price, stock, description)
-    updated_product.id = product_id  # Set product ID to update
-    
-    # Use the Products class to update product details
+    updated_product.id = product_id
+
     updated_product.update_product("inventory.db")
-    
-    # Redirect back to product list after updating
     return redirect(url_for('list'))
 
+'''
                 
 @app.route('/delete_selected', methods=['POST'])
 def delete_selected():
     if request.method == 'POST':
         try:
-            # Get the list of selected product IDs
             product_ids = request.form.getlist('product_ids')
             
             if not product_ids:
@@ -205,7 +211,8 @@ def delete_selected():
                 with sqlite3.connect('inventory.db') as conn:
                     cursor = conn.cursor()
                     
-                    # Create SQL query to delete selected products by ID
+                    # Effacement dans la table
+                    # Ajouter logique pour les relations étrangères
                     sql = "DELETE FROM products WHERE id IN ({})".format(','.join('?' for _ in product_ids))
                     cursor.execute(sql, product_ids)
                     conn.commit()
@@ -231,10 +238,125 @@ def list():
                 return render_template("product_list.html",rows=rows)
 
         
+
+# Table customers
+@app.route('/addcustomer', methods=['POST', 'GET'])
+def addcustomer():
+    if request.method == 'POST':
+        try:
+            first_name = request.form['first_name']
+            last_name = request.form['last_name']
+            email = request.form['email']
+
+            new_customer = Customers(first_name, last_name, email)
+
+            with sqlite3.connect('inventory.db') as conn:
+                cursor = conn.cursor()
+                cursor.execute('''
+                    CREATE TABLE IF NOT EXISTS customers (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        first_name TEXT NOT NULL,
+                        last_name TEXT NOT NULL,
+                        email TEXT NOT NULL,
+                        date_added TEXT NOT NULL DEFAULT CURRENT_DATE
+                    )
+                ''')
+
+                sql = "INSERT INTO customers (first_name, last_name, email, date_added) VALUES (?, ?, ?, CURRENT_DATE)"
+                args = (new_customer.first_name, new_customer.last_name, new_customer.email)
+                cursor.execute(sql, args)
+                conn.commit()
+                msg = "Customer successfully added"
+
+        except sqlite3.Error as e:
+            conn.rollback()
+            msg = f"There was an error inserting the customer: {e}"
+
+        finally:
+            return render_template("customer_result.html", msg=msg)
+               
+
+@app.route('/modify/<int:customer_id>', methods=['GET'])
+def modify_product(customer_id):
+    product_data = Products.get_product_by_id("inventory.db", customer_id)
+    if product_data:
+        product = {
+            'id': product_data[0],
+            'first_name': product_data[1],
+            'last_name': product_data[2],
+            'email': product_data[3],
+            'date_added': product_data[4]
+        }
+        return render_template('modify_customer.html', product=product)
+    else:
+        return "Product not found", 404
+
+
+@app.route('/update_product/<int:product_id>', methods=['POST'])
+def update_product(product_id):
+    name = request.form['name']
+    product_type = request.form['type']
+    category = request.form['category']
+    brand = request.form['brand']
+    price = request.form['price']
+    stock = request.form['stock']
+    description = request.form['description']
     
+    updated_product = Products(name, product_type, category, brand, price, stock, description)
+    updated_product.id = product_id
+
+    updated_product.update_product("inventory.db")
+    return redirect(url_for('list'))
+
+
+@app.route('/delete_selected_customer', methods=['POST'])
+def delete_selected_customer() -> None:
+    if request.method == 'POST':
+        try:
+            customer_ids = request.form.getlist('customer_ids', type=int)
+
+            if not customer_ids:
+                error_message = "No customer selected for deletion"
+            else:
+                with sqlite3.connect('inventory.db') as conn:
+                    cursor = conn.cursor()
+                    sql = "DELETE FROM customers WHERE id IN (%s)" % ','.join('?' for _ in customer_ids)
+                    cursor.execute(sql, customer_ids)
+                    conn.commit()
+                    success_message = f"{len(customer_ids)} customer(s) successfully deleted."
+
+            return render_template('customer_result.html', message=success_message or error_message)
+
+        except sqlite3.Error as e:
+            error_message = f"There was an error deleting the customers: {str(e)}"
+            return render_template('customer_result.html', message=error_message)
+
+
+
+@app.route('/customer_list')
+def customers_list():
+            with sqlite3.connect('inventory.db') as conn:
+                 conn.row_factory = sqlite3.Row
+                 cursor = conn.cursor()
+                 cursor.execute('''SELECT * from customers''')
+                 rows = cursor.fetchall()
+                 return render_template("customer_list.html", rows=rows)
+
 
 
 if __name__ == '__main__':
+
+    with sqlite3.connect('inventory.db') as conn:
+        cursor = conn.cursor()
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS customers (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        first_name TEXT NOT NULL,
+        last_name TEXT NOT NULL,
+        email TEXT NOT NULL,
+        date_added TEXT NOT NULL DEFAULT CURRENT_DATE  
+        )
+        ''')
     app.run(debug=True)
-    app.app_context().push()
-    db.create_all()
+
+

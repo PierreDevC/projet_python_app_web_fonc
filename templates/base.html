@@ -15,13 +15,11 @@
             font-family: 'Helvetica', sans-serif;
             background-color: #040D29;
         }
-        
         .container {
             padding-top: 20px;
         }
-
         /* Styling for the table */
-        #products {
+        #datatable {
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
@@ -30,54 +28,43 @@
             overflow: hidden;
             box-shadow: 40px 10px 30px rgba(0,0,0,0.15);
         }
-
-        #products thead {
+        #datatable thead {
             background-color: #0D1E47;
             color: white;
         }
-
-        #products thead th {
+        #datatable thead th {
             padding: 12px;
             text-align: left;
             font-weight: bold;
         }
-
-        #products tbody td {
+        #datatable tbody td {
             padding: 12px;
             border: 1px solid #ddd;
             vertical-align: middle;
         }
-
-        /* Alternating row colors */
-        #products tbody tr:nth-child(even) {
+        /* Alternance des couleurs de tables */
+        #datatable tbody tr:nth-child(even) {
             background-color: #f7f7f7;
         }
-
-        #products tbody tr:nth-child(odd) {
+        #datatable tbody tr:nth-child(odd) {
             background-color: #ffffff;
         }
-
-        #products tbody tr:hover {
+        #datatable tbody tr:hover {
             background-color: #e9e9e9;
             transition: background-color 0.2s ease;
         }
-
-        #products thead th:first-child {
+        #datatable thead th:first-child {
             border-top-left-radius: 8px;
         }
-
-        #products thead th:last-child {
+        #datatable thead th:last-child {
             border-top-right-radius: 8px;
         }
-
-        #products tbody tr:last-child td:first-child {
+        #datatable tbody tr:last-child td:first-child {
             border-bottom-left-radius: 8px;
         }
-
-        #products tbody tr:last-child td:last-child {
+        #datatable tbody tr:last-child td:last-child {
             border-bottom-right-radius: 8px;
         }
-
         /* Button styling */
         a.button {
             display: inline-block;
@@ -88,35 +75,24 @@
             text-decoration: none;
             border-radius: 5px;
         }
-
-        
-
         a.button:hover {
             background-color: #6a2a6e;
         }
-
-
         .navbar-background-color {
             background-color: #081028;
         }
-
         .dashboard-background-color {
             background-color: #081028;
         }
-
         .table-background-color {
             background-color: #0b1739;
         }
-
         .blue-border {
         border-color: #0b1739 !important;
         }
-
         .shadow-right {
         box-shadow: 20px 15px 20px rgba(0,0,0,0.15);
         }
-
-
         /* boutons pour les pages */
         .buttons {
             display: inline-block;
@@ -129,17 +105,14 @@
             border:none;
             transition: 0.3s;
         }
-
         .buttons:hover {
             background-color: #273E72;
             color: white;
         }
-
-        
-
-
-
-
+        .logo {
+            font-size:30px; 
+            padding: 20px;
+        }
     </style>
 </head>
 <body>
@@ -148,11 +121,11 @@
             <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 navbar-background-color border-end blue-border shadow-right">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
                     <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                        <span class="fs-5 d-none d-sm-inline" style="font-size:30px; padding: 20px;">PierreAb Inventory Pro</span>
+                        <span class="logo fs-5 d-none d-sm-inline">PierreAb Inventory Pro</span>
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                         <li class="nav-item">
-                            <a href="/" class="nav-link align-middle px-0">
+                            <a href="/dashboard" class="nav-link align-middle px-0">
                                 <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">Dashboard</span>
                             </a>
                         </li>
@@ -161,12 +134,12 @@
                                 <i class="fs-4 bi-laptop"></i> <span class="ms-1 d-none d-sm-inline">Products</span></a>
                         </li>
                         <li>
-                            <a href="/product_list" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-truck"></i> <span class="ms-1 d-none d-sm-inline">Orders</span></a>
+                            <a href="/customer_list" class="nav-link px-0 align-middle">
+                                <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Customers</span></a>
                         </li>
                         <li>
-                            <a href="#" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Customers</span></a>
+                            <a href="/product_list" class="nav-link px-0 align-middle">
+                                <i class="fs-4 bi-truck"></i> <span class="ms-1 d-none d-sm-inline">Orders</span></a>
                         </li>
                         <li>
                             <a href="#" class="nav-link px-0 align-middle">

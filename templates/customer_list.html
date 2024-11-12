@@ -1,0 +1,99 @@
+<!-- templates/list.html -->
+{% extends 'base.html' %}
+
+{% block title %}Customers{% endblock %}
+
+{% block content %}
+<h2 class="text-white">Customers</h2>
+<br>
+
+<script>
+    function toggleDeleteButton() {
+        // Boutons checked
+        const checkboxes = document.querySelectorAll('input[name="customer_ids"]:checked');
+        
+        // Bouton delete
+        const deleteBtn = document.getElementById('deleteBtn');
+        
+        // Si au moins un bouton est checked, montrer le bouton
+        if (checkboxes.length > 0) {
+            deleteBtn.style.display = 'inline-block'; // Montrer bouton
+        } else {
+            deleteBtn.style.display = 'none'; // Cacher bouton
+        }
+    }
+</script>
+
+<!-- <a href="/enternew" class="btn btn-primary mb-3">Add New Product</a> -->
+
+<button type="button" class="buttons" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Add New Customer
+  </button>
+
+<form method="POST" action="/delete_selected_customer" id="deleteForm">
+    <table id="datatable" class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Select</th>
+                <th>Id</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                <td><input type="checkbox" name="customer_ids" value="{{ row['id'] }}" onchange="toggleDeleteButton()"></td>
+                <td>{{ row['id']}}</td>
+                <td>{{ row['first_name'] }}</td>
+                <td>{{ row['last_name'] }}</td>
+                <td>{{ row['email'] }}</td>
+                
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Bouton initialement caché -->
+    <button type="submit" class="btn btn-danger delete-btn" id="deleteBtn" style="display: none;">Delete Selected Customers</button>
+</form>
+
+<a href="/" class="buttons">Go to Home Page</a>
+
+<!-- Formulaire Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add new customer</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>        
+        <div class="modal-body">
+        <form action="{{ url_for('addcustomer')}}" method="POST">
+        <div class="mb-3">
+            <label for="CustomerName" class="form-label">First Name</label>
+            <input type="text" class="form-control" name="first_name" placeholder="Enter customer first name">
+        </div>
+        <div class="mb-3">
+            <label for="CustomerName" class="form-label">Last Name</label>
+            <input type="text" class="form-control" name="last_name" placeholder="Enter customer last name">
+        </div>
+        <div class="mb-3">
+            <label for="CustomerName" class="form-label">Email</label>
+            <input type="text" class="form-control" name="email" placeholder="Enter customer email">
+        </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <input type="submit" class="btn btn-primary" value="Add customer">
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  
+
+{% endblock %}

@@ -8,4 +8,28 @@
 <h1>Hello you are logged in</h1>
 <a href="{{url_for('logout')}}">Press here to logout</a>
 
+<table>
+    <tr>
+        <th>Products</th>
+    </tr>
+    {% for product in products %}
+    <tr>
+        <td>{{ product.name }}</td>
+        <td>{{ product.price }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<table>
+    <tr>
+        <th>Customers</th>
+    </tr>
+    {% for customer in customers %}
+    <tr>
+        <td>{{ customer.name }}</td>
+        <td>{{ customer.email }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
 {% endblock %}

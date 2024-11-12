@@ -16,6 +16,7 @@ def db_connection(func):
 
 class BaseModel:
     __abstract__ = True
+    # à finir.... va être parent de toutes les classes
 
 
 class Customers:
@@ -36,6 +37,7 @@ class Products:
         self.stock = stock
         self.description = description
         self.date_added = datetime.now().strftime("%Y-%m-%d")
+
 
     @db_connection
     def add_product(self, cursor):
