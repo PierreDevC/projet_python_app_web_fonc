@@ -76,7 +76,7 @@ def login():
     return render_template('login.html', form=form)
 
 @app.route('/dashboard', methods=['GET', 'POST'])
-#@login_required #enlever commentaire après l'implémentation de l'authentification
+@login_required
 def dashboard():
     conn = sqlite3.connect('inventory.db')
     c = conn.cursor()
