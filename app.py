@@ -84,7 +84,7 @@ def dashboard():
     customers = c.execute('SELECT * FROM customers LIMIT 5').fetchall()
     conn.close()
 
-    return render_template('dashboard.html', products=products, customers=customers)
+    return render_template('dashboard.html', products=products, customers=customers, user=current_user)
 
 @app.route('/logout', methods=['GET', 'POST'])
 @login_required
@@ -229,6 +229,7 @@ def delete_selected():
 
           
 @app.route('/product_list')
+@login_required
 def list():
         with sqlite3.connect('inventory.db') as conn:
                 conn.row_factory = sqlite3.Row
@@ -334,6 +335,7 @@ def delete_selected_customer() -> None:
 
 
 @app.route('/customer_list')
+@login_required
 def customers_list():
             with sqlite3.connect('inventory.db') as conn:
                  conn.row_factory = sqlite3.Row

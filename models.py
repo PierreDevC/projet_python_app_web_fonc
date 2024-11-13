@@ -25,8 +25,6 @@ class Customers:
         self.last_name = last_name
         self.email = email
 
-
-
 class Products:
     def __init__(self, name, type, category, brand, price, stock, description=None):
         self.name = name
