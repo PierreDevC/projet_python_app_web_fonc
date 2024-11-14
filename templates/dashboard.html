@@ -3,33 +3,131 @@
 {% block title %}Product List{% endblock %}
 
 {% block content %}
-<h1>Dashboard</h1>
 
-<h1>Welcome, {{ user.username }}!</h1>
-<a href="{{url_for('logout')}}">Press here to logout</a>
+<div class="container">
+    <div class="row">
+        <div class="col-8"><h1 class="text-white">Welcome to your dashboard, {{ user.username }}!</h1>
+        <p class="text-white">Explore and analyze data from PierreAb's Inventory Management System</p>
+        </div>
+        
+        <div class="col-4">
+            <button class="buttons">Export data &nbsp; <i class="bi bi-file-earmark-arrow-up-fill"></i></button>&nbsp;
+            <button class="buttons">Create report &nbsp; <i class="bi bi-file-bar-graph-fill"></i></button>
+        </div>
+    </div>
+    <br>
+<div class="row">
+<div class="col-sm-6 py-2">
+    <div class="card h-100 blue-border card-body table-custom ">
+        <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+    </div>
+</div>
+<div class="col-sm-6 py-2">
+    <div class="card h-100 blue-border table-custom text-white">
+        <div class="card-body ">
+            
+            <h3 class="card-title">Top products</h3>
+            <p class="card-text">Short list of products</p>
+            <table class="table table-custom text-white">
+              <thead>
+                <tr>
+                  <th scope="col">Products</th>
+                  <th scope="col">Category</th>
+                  <th scope="col">Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>MacBook Pro (16")</td>
+                  <td>Productivity</td>
+                  <td>2,599.99</td>
+                </tr>
+                <tr>
+                  <td>Lenovo ThinkPad X1 Carbon</td>
+                  <td>Productivity</td>
+                  <td>1499.99</td>
+                </tr>
+                <tr>
+                  <td>iMac 24-inch</td>
+                  <td>Productivity</td>
+                  <td>1399.99</td>
+                </tr>
+              </tbody>
+            </table>
+            <a href="/product_list" class="buttons">See all products</a>
+        </div>
+    </div>
+</div>
+<div class="col-sm-12 py-2">
+    <div class="card h-100 blue-border table-custom text-white">
+        <div class="card-body">
+            <h3 class="card-title">Orders</h3>
+            <p class="card-text">List of unresolved orders</p>
+            <table class="table table-custom text-white">
+              <thead>
+                <tr>
+                  <th scope="col">Order</th>
+                  <th scope="col">Customer</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Order Date</th>
+                
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>MacBook Pro (16")</td>
+                  <td>John Doe</td>
+                  <td>2,599.99</td>
+                  <td>Pending</td>
+                  <td>2024-11-14</td>
+                </tr>
+                <tr>
+                  <td>Lenovo ThinkPad X1 Carbon</td>
+                  <td>Jane Doe</td>
+                  <td>1499.99</td>
+                  <td>Pending</td>
+                  <td>2024-11-14</td>
+                </tr>
+                <tr>
+                  <td>iMac 24-inch</td>
+                  <td>Michael Scofield</td>
+                  <td>1399.99</td>
+                  <td>Pending</td>
+                  <td>2024-11-14</td>
+                </tr>
+              </tbody>
+            </table>
+            <a href="#" class="buttons">Expand orders</a>
+        </div>
+    </div>
+</div>
+</div>
+</div>
 
-<table>
-    <tr>
-        <th>Products</th>
-    </tr>
-    {% for product in products %}
-    <tr>
-        <td>{{ product.name }}</td>
-        <td>{{ product.price }}</td>
-    </tr>
-    {% endfor %}
-</table>
-
-<table>
-    <tr>
-        <th>Customers</th>
-    </tr>
-    {% for customer in customers %}
-    <tr>
-        <td>{{ customer.name }}</td>
-        <td>{{ customer.email }}</td>
-    </tr>
-    {% endfor %}
-</table>
+<script>
+    const xValues = [50,60,70,80,90,100,110,120,130,140,150];
+    const yValues = [7,8,8,9,9,9,10,11,14,14,15];
+    
+    new Chart("myChart", {
+      type: "line",
+      data: {
+        labels: xValues,
+        datasets: [{
+          fill: false,
+          lineTension: 0,
+          backgroundColor: "rgba(0,0,255,1.0)",
+          borderColor: "rgba(255,255,255,1.0)", // Changed to white
+          data: yValues
+        }]
+      },
+      options: {
+        legend: {display: false},
+        scales: {
+          yAxes: [{ticks: {min: 6, max:16}}],
+        }
+      }
+    });
+        </script>
 
 {% endblock %}

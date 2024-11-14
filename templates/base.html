@@ -8,12 +8,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <title>{% block title %}My App{% endblock %}</title>
     <style>
         /* General body styling */
         body {
             font-family: 'Helvetica', sans-serif;
-            background-color: #040D29;
+            background-color: #080F25;
         }
         .container {
             padding-top: 20px;
@@ -79,7 +80,7 @@
             background-color: #6a2a6e;
         }
         .navbar-background-color {
-            background-color: #081028;
+            background-color: #080F25;
         }
         .dashboard-background-color {
             background-color: #081028;
@@ -113,6 +114,13 @@
             font-size:30px; 
             padding: 20px;
         }
+        .lightblue {
+		color: #8695C4
+		}
+        .table-custom {
+		color: #101935;
+		background-color: #101935;
+		}
     </style>
 </head>
 <body>
@@ -121,29 +129,29 @@
             <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 navbar-background-color border-end blue-border shadow-right">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
                     <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                        <span class="logo fs-5 d-none d-sm-inline">PierreAb Inventory Pro</span>
+                        <span class="logo fs-5 d-none d-sm-inline"><img src="/static/logo.png" alt="logo"></span>
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                         <li class="nav-item">
                             <a href="/dashboard" class="nav-link align-middle px-0">
-                                <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">Dashboard</span>
+                                <i class="fs-4 bi-grid-fill lightblue"></i> <span class="ms-1 d-none d-sm-inline lightblue">Dashboard</span>
                             </a>
                         </li>
                         <li>
                             <a href="/product_list" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-laptop"></i> <span class="ms-1 d-none d-sm-inline">Products</span></a>
+                                <i class="fs-4 bi-laptop-fill lightblue"></i> <span class="ms-1 d-none d-sm-inline lightblue">Products</span></a>
                         </li>
                         <li>
                             <a href="/customer_list" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Customers</span></a>
+                                <i class="fs-4 bi-people-fill lightblue"></i> <span class="ms-1 d-none d-sm-inline lightblue">Customers</span></a>
                         </li>
                         <li>
                             <a href="/product_list" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-truck"></i> <span class="ms-1 d-none d-sm-inline">Orders</span></a>
+                                <i class="fs-4 bi bi-cart-fill lightblue"></i> <span class="ms-1 d-none d-sm-inline lightblue">Orders</span></a>
                         </li>
                         <li>
                             <a href="#" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-bar-chart"></i> <span class="ms-1 d-none d-sm-inline">Analytics</span></a>
+                                <i class="fs-4 bi-bar-chart-fill lightblue"></i> <span class="ms-1 d-none d-sm-inline lightblue">Analytics</span></a>
                         </li>
                     </ul>
                     <hr>
