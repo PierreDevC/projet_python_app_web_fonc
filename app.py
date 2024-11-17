@@ -1,5 +1,5 @@
 import os
-from flask import Flask,render_template, request, url_for, redirect
+from flask import Flask,render_template, request, url_for, redirect, send_file
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
@@ -9,6 +9,8 @@ from flask_bcrypt import Bcrypt
 from models import Products
 from models import Customers
 import sqlite3
+import pandas as pd
+import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 
@@ -345,6 +347,44 @@ def customers_list():
                  return render_template("customer_list.html", rows=rows)
 
 
+
+
+
+# Analytics
+
+import matplotlib.pyplot as plt
+import sqlite3
+
+def generate_pie_chart():
+    # Connect to the database
+    conn = sqlite3.connect('inventory.db')
+    cursor = conn.cursor()
+
+    # Query the database to retrieve the brand data
+    cursor.execute('SELECT brand, COUNT(*) FROM products GROUP BY brand')
+    rows = cursor.fetchall()
+
+    # Extract the brand names and counts
+    brands = [row[0] for row in rows]
+    counts = [row[1] for row in rows]
+
+    # Create the pie chart
+    plt.pie(counts, labels=brands, autopct='%1.1f%%')
+    plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+    plt.title('Product Share by Brand')
+
+    # Save the plot to a file
+    plt.savefig('static/product_share.png')
+    plt.close()
+
+    # Close the database connection
+    conn.close()
+
+
+@app.route('/product_share')
+def product_share():
+    generate_pie_chart()  # Update the plot
+    return send_file('static/product_share.png', mimetype='image/png')
 
 if __name__ == '__main__':
 

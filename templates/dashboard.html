@@ -6,20 +6,62 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-8"><h1 class="text-white">Welcome to your dashboard, {{ user.username }}!</h1>
-        <p class="text-white">Explore and analyze data from PierreAb's Inventory Management System</p>
+        <div class="col-8"><h1 class="text-white">Bienvenue dans le tableau de bord, {{ user.username }}!</h1>
+        <p class="text-white">Une application simple pour gérer vôtre inventaire, avec un système de connexion sécurisé.</p>
         </div>
         
         <div class="col-4">
-            <button class="buttons">Export data &nbsp; <i class="bi bi-file-earmark-arrow-up-fill"></i></button>&nbsp;
-            <button class="buttons">Create report &nbsp; <i class="bi bi-file-bar-graph-fill"></i></button>
+            <button class="buttons small">Exporter les données &nbsp; <i class="bi bi-file-earmark-arrow-up-fill"></i></button>&nbsp;
+            <button class="buttons small">Créer un rapport &nbsp; <i class="bi bi-file-bar-graph-fill"></i></button>
         </div>
     </div>
-    <br>
+
+        <!-- Section principale -->
+        <main class="container py-5">
+          <div class="row">
+              <div class="col-md-4">
+                  <div class="card table-custom">
+                      <img src="https://via.placeholder.com/350x200" width="350" class="card-img-top" alt="Image produit">
+                      <div class="card-body text-white">
+                          <h5 class="card-title">Gérer les produits</h5>
+                          <p class="card-text">Ajouter, modifier et supprimer des produits facilement.</p>
+                          <a href="/product_list.html" class="btn btn-primary w-100 buttons">Voir les produits</a>
+                      </div>
+                  </div>
+              </div>
+  
+              <div class="col-md-4">
+                  <div class="card table-custom">
+                      <img src="https://via.placeholder.com/350x200" class="card-img-top" alt="Image gestion utilisateur">
+                      <div class="card-body text-white">
+                          <h5 class="card-title">Gestion des utilisateurs</h5>
+                          <p class="card-text">Créer, modifier et supprimer des utilisateurs pour un contrôle total de votre application.</p>
+                          <a href="/product_list.html" class="btn btn-primary w-100 buttons">Gérer les utilisateurs</a>
+                      </div>
+                  </div>
+              </div>
+  
+              <div class="col-md-4">
+                  <div class="card table-custom">
+                      <img src="https://via.placeholder.com/350x200" class="card-img-top" alt="Image statistiques">
+                      <div class="card-body text-white">
+                          <h5 class="card-title">Statistiques</h5>
+                          <p class="card-text">Consulter les statistiques liées à vos produits et utilisateurs.</p>
+                          <a href="/product_list.html" class="btn btn-primary w-100 buttons">Voir les statistiques</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </main>
+
 <div class="row">
 <div class="col-sm-6 py-2">
-    <div class="card h-100 blue-border card-body table-custom ">
+    <div class="card h-100 blue-border card-body table-custom">
+      <card class="card-body">
+        <h3 class="text-white">Profits</h3>
+        <br>
         <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+      </card>
     </div>
 </div>
 <div class="col-sm-6 py-2">
@@ -54,7 +96,7 @@
                 </tr>
               </tbody>
             </table>
-            <a href="/product_list" class="buttons">See all products</a>
+            <a href="/product_list" class="buttons">Voir la liste de produits</a>
         </div>
     </div>
 </div>
@@ -62,7 +104,7 @@
     <div class="card h-100 blue-border table-custom text-white">
         <div class="card-body">
             <h3 class="card-title">Orders</h3>
-            <p class="card-text">List of unresolved orders</p>
+            <p class="card-text">Liste de commandes en cours</p>
             <table class="table table-custom text-white">
               <thead>
                 <tr>
@@ -98,7 +140,7 @@
                 </tr>
               </tbody>
             </table>
-            <a href="#" class="buttons">Expand orders</a>
+            <a href="#" class="buttons">Voir la liste de commandes</a>
         </div>
     </div>
 </div>
