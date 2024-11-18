@@ -4,7 +4,7 @@
 {% block title %}Customers{% endblock %}
 
 {% block content %}
-<h2 class="text-white">Customers</h2>
+<h2 class="text-white">Clients</h2>
 <br>
 
 <script>
@@ -27,17 +27,17 @@
 <!-- <a href="/enternew" class="btn btn-primary mb-3">Add New Product</a> -->
 
 <button type="button" class="buttons" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Add New Customer
+    Ajouter un nouveau client
   </button>
 
 <form method="POST" action="/delete_selected_customer" id="deleteForm">
     <table id="datatable" class="table table-striped table-hover">
         <thead>
             <tr>
-                <th>Select</th>
+                <th>Sélectionner</th>
                 <th>Id</th>
-                <th>First Name</th>
-                <th>Last Name</th>
+                <th>Prénom</th>
+                <th>Nom</th>
                 <th>Email</th>
             </tr>
         </thead>

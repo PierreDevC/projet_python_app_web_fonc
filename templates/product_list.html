@@ -3,7 +3,7 @@
 {% block title %}Products{% endblock %}
 
 {% block content %}
-<h2 class="text-white">Products</h2>
+<h2 class="text-white">Produits</h2>
 <br>
 
 <script>
@@ -21,6 +21,23 @@
             deleteBtn.style.display = 'none'; // Cacher bouton
         }
     }
+
+    function selectAllCheckboxes() {
+        var selectAllCheckbox = document.getElementById('selectAll');
+        var checkboxes = document.getElementsByName('product_ids');
+
+        if (selectAllCheckbox.checked) {
+            for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = true;
+            }
+        } else {
+            for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = false;
+            }
+        }
+    }
+
+
 </script>
 
 <!-- <a href="/enternew" class="btn btn-primary mb-3">Add New Product</a> -->
@@ -33,14 +50,14 @@
     <table id="datatable" class="table table-striped table-hover">
         <thead>
             <tr>
-                <th>Select</th>
+                <th><input type="checkbox" id="selectAll" onchange="selectAllCheckboxes(); toggleDeleteButton()"> &nbsp; Sélectionner</th>
                 <th>Id</th>
-                <th>Name</th>
+                <th>Nom</th>
                 <th>Type</th>
-                <th>Category</th>
-                <th>Brand</th>
-                <th>Price</th>
-                <th>Stock</th>
+                <th>Catégorie</th>
+                <th>Marque</th>
+                <th>Prix</th>
+                <th>Quantité en Stock</th>
                 <th>Description</th>
             </tr>
         </thead>
@@ -65,7 +82,7 @@
     <button type="submit" class="btn btn-danger delete-btn" id="deleteBtn" style="display: none;">Delete Selected Products</button>
 </form>
 
-<a href="/" class="buttons">Go to Home Page</a>
+<a href="/" class="buttons">Aller au tableau de bord</a>
 
 <!-- Formulaire Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

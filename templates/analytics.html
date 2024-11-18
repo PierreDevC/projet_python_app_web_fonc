@@ -1,15 +1,16 @@
 {% extends 'base.html' %}
 
-{% block title %}Products{% endblock %}
+{% block title %}Données analytiques{% endblock %}
 
 {% block content %}
-
+<h2 class="text-white">Donnés analytiques</h2>
+<br>
 <div class="row">
   <div class="col-md-4">
     <div class="card">
       <img src="{{ url_for('static', filename='product_share.png') }}" class="card-img-top" alt="Product Share by Brand">
       <div class="card-body">
-        <h5 class="card-title">Product Share by Brand</h5>
+        <h5 class="card-title">Partage de Produits par Marque</h5>
       </div>
     </div>
   </div>
@@ -17,7 +18,7 @@
     <div class="card">
       <img src="{{ url_for('static', filename='category_bar_chart.png') }}" class="card-img-top" alt="Top 5 Categories by Number of Products">
       <div class="card-body">
-        <h5 class="card-title">Top 5 Categories by Number of Products</h5>
+        <h5 class="card-title">Nombre de Produits pour Chaque Catégorie</h5>
       </div>
     </div>
   </div>
@@ -25,7 +26,7 @@
     <div class="card">
       <img src="{{ url_for('static', filename='price_histogram.png') }}" class="card-img-top" alt="Distribution of Product Prices">
       <div class="card-body">
-        <h5 class="card-title">Distribution of Product Prices</h5>
+        <h5 class="card-title">Répartition des Prix des Produits</h5>
       </div>
     </div>
   </div>

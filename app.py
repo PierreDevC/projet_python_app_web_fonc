@@ -15,6 +15,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 
+
 app = Flask(__name__)
 
 # Logique d'authentification
@@ -355,6 +356,10 @@ def customers_list():
 
 # Analytics
 
+# Définir les couleurs principales
+plt.style.use('default')
+plt.rcParams['axes.prop_cycle'] = plt.cycler('color', ['#3498db', '#8e44ad'])  # bleu et violet
+
 def generate_pie_chart():
     # Connect to the database
     conn = sqlite3.connect('inventory.db')
@@ -374,7 +379,7 @@ def generate_pie_chart():
     plt.title('Product Share by Brand')
 
     # Save the plot to a file
-    plt.savefig('static/product_share.png')
+    plt.savefig('static/product_share.png', transparent=True)
     plt.close()
 
 def generate_category_bar_chart():
@@ -397,7 +402,7 @@ def generate_category_bar_chart():
     plt.title('Top 5 Categories by Number of Products')
 
     # Save the plot to a file
-    plt.savefig('static/category_bar_chart.png')
+    plt.savefig('static/category_bar_chart.png', transparent=True)
     plt.close()
 
 def generate_price_histogram():
@@ -419,58 +424,22 @@ def generate_price_histogram():
     plt.title('Distribution of Product Prices')
 
     # Save the plot to a file
-    plt.savefig('static/price_histogram.png')
+    plt.savefig('static/price_histogram.png', transparent=True)
     plt.close()
 
-def generate_other_graphs():
+
+    
+    
+
+@app.route('/analytics')
+@login_required
+def product_share():
+    generate_pie_chart()  
     generate_category_bar_chart()
     generate_price_histogram()
-
-@app.route('/product_share')
-def product_share():
-    generate_pie_chart()  # Update the plot
-    generate_other_graphs()
-    return render_template('product_share.html')
+    return render_template('analytics.html')
 
 if __name__ == '__main__':
-
-    with sqlite3.connect('inventory.db') as conn:
-        cursor = conn.cursor()
-        cursor.execute('''
-        CREATE TABLE IF NOT EXISTS customers (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        first_name TEXT NOT NULL,
-        last_name TEXT NOT NULL,
-        email TEXT NOT NULL,
-        date_added TEXT NOT NULL DEFAULT CURRENT_DATE  
-        )
-        ''')
-
-        # List of 10 products
-    products = [
-        ("MacBook Pro", "Laptop", "Productivity", "Apple", 1999.99, 50, "High-performance laptop for professionals"),
-        ("Dell XPS 15", "Laptop", "Productivity", "Dell", 1499.99, 30, "Powerful and sleek laptop for work and entertainment"),
-        ("Alienware Aurora R12", "Desktop", "Gaming", "Dell", 1799.99, 20, "High-end gaming desktop with customizable RGB lighting"),
-        ("HP Envy 34", "Desktop", "Workstation", "HP", 1999.99, 15, "All-in-one desktop with a large curved display"),
-        ("Lenovo ThinkPad X1 Carbon", "Laptop", "Productivity", "Lenovo", 1399.99, 40, "Ultra-light business laptop with long battery life"),
-        ("ASUS ROG Zephyrus G14", "Laptop", "Gaming", "Asus", 1499.99, 25, "Compact and powerful gaming laptop"),
-        ("iMac 24-inch", "Desktop", "Productivity", "Apple", 1299.99, 35, "Colorful all-in-one desktop with M1 chip"),
-        ("Microsoft Surface Laptop 4", "Laptop", "Productivity", "Microsoft", 999.99, 45, "Sleek and versatile laptop with touchscreen"),
-        ("Acer Predator Helios 300", "Laptop", "Gaming", "Acer", 1199.99, 30, "Popular mid-range gaming laptop"),
-        ("HP Z4 G4", "Desktop", "Workstation", "HP", 2499.99, 10, "High-performance workstation for demanding tasks")
-    ]
-
-    # Connect to the database and insert products
-    with sqlite3.connect('inventory.db') as conn:
-        cursor = conn.cursor()
-        cursor.executemany('''
-        INSERT INTO products (name, type, category, brand, price, stock, description)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-        ''', products)
-        conn.commit()
-
-    print("10 products have been added to the database.")
-
     app.run(debug=True)
 
 
