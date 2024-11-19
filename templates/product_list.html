@@ -50,8 +50,43 @@
 <button type="button" class="buttons" data-bs-toggle="modal" data-bs-target="#exampleModal">
     Ajouter un nouveau produit
 </button>
-
-<button></button>
+<br>
+<br>
+<form action="/filter_products" method="get">
+    <div class="mb-3">
+        <label for="type" class="form-label text-white">Type</label>
+        <select class="form-select" name="type" id="type">
+            <option value="">All</option>
+            <option value="Laptop">Laptop</option>
+            <option value="Desktop">Desktop</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="category" class="form-label text-white">Category</label>
+        <select class="form-select" name="category" id="category">
+            <option value="">All</option>
+            <option value="Productivity">Productivity</option>
+            <option value="Gaming">Gaming</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="brand" class="form-label text-white">Brand</label>
+        <select class="form-select" name="brand" id="brand">
+            <option value="">All</option>
+            <option value="Acer">Acer</option>
+            <option value="Apple">Apple</option>
+            <option value="Asus">Asus</option>
+            <option value="Dell">Dell</option>
+            <option value="HP">HP</option>
+            <option value="Lenovo">Lenovo</option>
+            <option value="Microsoft">Microsoft</option>
+            <option value="Samsung">Samsung</option>
+            <option value="Sony">Sony</option>
+            <option value="Toshiba">Toshiba</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Appliquer les filtres</button>
+</form>
 
 
 <form method="POST" action="/delete_selected" id="deleteForm">
@@ -83,7 +118,7 @@
                 <td>{{ row['stock'] }}</td>
                 <td>{{ row['description'] }}</td>
                 <td>
-                <button type="button" class="btn btn-primary btn-sm" 
+                <button type="button" class="btn btn-primary btn-sm buttons" 
                     data-bs-toggle="modal" 
                     data-bs-target="#modifyModal"
                     data-id="{{ row['id'] }}"
@@ -95,7 +130,7 @@
                     data-stock="{{ row['stock'] }}"
                     data-description="{{ row['description'] }}"
                     onclick="populateModifyModal(this)">
-                Modify
+                Modifier
             </button>
             
                 </td>

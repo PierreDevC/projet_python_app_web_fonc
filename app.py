@@ -9,7 +9,6 @@ from flask_bcrypt import Bcrypt
 from models import Products
 from models import Customers
 import sqlite3
-import pandas as pd
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -220,6 +219,41 @@ def list():
         cursor.execute('''SELECT * from products''')
         rows = cursor.fetchall()
         return render_template("product_list.html",rows=rows)
+    
+
+@app.route('/filter_products', methods=['GET'])
+@login_required
+def filter_products():
+    type = request.args.get('type')
+    category = request.args.get('category')
+    brand = request.args.get('brand')
+
+    query = "SELECT * FROM products"
+
+    conditions = []
+    params = ()
+
+    if type:
+        conditions.append("type = ?")
+        params += (type,)
+
+    if category:
+        conditions.append("category = ?")
+        params += (category,)
+
+    if brand:
+        conditions.append("brand = ?")
+        params += (brand,)
+
+    if conditions:
+        query += " WHERE " + " AND ".join(conditions)
+
+    with sqlite3.connect('inventory.db') as conn:
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute(query, params)
+        rows = cursor.fetchall()
+        return render_template("product_list.html", rows=rows)
 
 # Customers routes
 @app.route('/addcustomer', methods=['POST', 'GET'])
