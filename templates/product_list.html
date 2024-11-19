@@ -33,21 +33,26 @@
         }
     }
 
-    function populateModifyModal(id, name, type, category, brand, price, stock, description) {
-        document.getElementById('modify_product_id').value = id;
-        document.getElementById('modify_product_name').value = name;
-        document.querySelector(`input[name="modify_product_type"][value="${type}"]`).checked = true;
-        document.querySelector(`input[name="modify_product_category"][value="${category}"]`).checked = true;
-        document.querySelector('select[name="modify_product_brand"]').value = brand;
-        document.getElementById('modify_product_price').value = price;
-        document.getElementById('modify_product_stock').value = stock;
-        document.getElementById('modify_product_desc').value = description;
+    function populateModifyModal(button) {
+    const data = button.dataset;
+
+    document.getElementById('modify_product_id').value = data.id;
+    document.getElementById('modify_product_name').value = data.name;
+    document.querySelector(`input[name="modify_product_type"][value="${data.type}"]`).checked = true;
+    document.querySelector(`input[name="modify_product_category"][value="${data.category}"]`).checked = true;
+    document.querySelector('select[name="modify_product_brand"]').value = data.brand;
+    document.getElementById('modify_product_price').value = data.price;
+    document.getElementById('modify_product_stock').value = data.stock;
+    document.getElementById('modify_product_desc').value = data.description;
     }
 </script>
 
 <button type="button" class="buttons" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Add New Product
+    Ajouter un nouveau produit
 </button>
+
+<button></button>
+
 
 <form method="POST" action="/delete_selected" id="deleteForm">
     <table id="datatable" class="table table-striped table-hover">
@@ -78,21 +83,21 @@
                 <td>{{ row['stock'] }}</td>
                 <td>{{ row['description'] }}</td>
                 <td>
-                    <button type="button" class="btn btn-primary btn-sm" 
-                            data-bs-toggle="modal" 
-                            data-bs-target="#modifyModal"
-                            onclick="populateModifyModal(
-                                '{{ row['id'] }}',
-                                '{{ row['name'] }}',
-                                '{{ row['type'] }}',
-                                '{{ row['category'] }}',
-                                '{{ row['brand'] }}',
-                                '{{ row['price'] }}',
-                                '{{ row['stock'] }}',
-                                '{{ row['description'] }}'
-                            )">
-                        Modify
-                    </button>
+                <button type="button" class="btn btn-primary btn-sm" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#modifyModal"
+                    data-id="{{ row['id'] }}"
+                    data-name="{{ row['name'] }}"
+                    data-type="{{ row['type'] }}"
+                    data-category="{{ row['category'] }}"
+                    data-brand="{{ row['brand'] }}"
+                    data-price="{{ row['price'] }}"
+                    data-stock="{{ row['stock'] }}"
+                    data-description="{{ row['description'] }}"
+                    onclick="populateModifyModal(this)">
+                Modify
+            </button>
+            
                 </td>
             </tr>
             {% endfor %}
