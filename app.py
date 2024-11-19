@@ -14,14 +14,12 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-
-
 app = Flask(__name__)
 
-# Logique d'authentification
+# Authentication logic
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-app.config['SECRET_KEY'] = 'thisisasecretkey' #changer le key plus tard
+app.config['SECRET_KEY'] = 'thisisasecretkey'
 
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
@@ -64,11 +62,9 @@ class LoginForm(FlaskForm):
 
     submit = SubmitField('Login')
 
-
-
 @app.route('/')
 def home():
-        return render_template('home.html')
+    return render_template('home.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -98,7 +94,7 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
-@ app.route('/register', methods=['GET', 'POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
 
@@ -111,100 +107,84 @@ def register():
 
     return render_template('register.html', form=form)
 
-
-# Logique de produits/customers/orders
+# Products/customers/orders logic
 @app.route('/enternew')
 def new_product():
-      return render_template('add_product.html')
+    return render_template('add_product.html')
 
 @app.route('/addrec',methods=['POST', 'GET'])
 def addrec():
-      if request.method == 'POST':
-            try:
-                name = request.form['product_name']
-                type = request.form.get('product_type')
-                category = request.form['product_category']
-                brand = request.form['product_brand']
-                price = request.form['product_price']
-                stock = request.form['product_stock']
-                desc = request.form['product_desc'] 
-                
-                # Instance de l'objet de produit
-                new_product = Products(name, type, category, brand, price, stock, desc)
-
-                with sqlite3.connect('inventory.db') as conn:
-                        cursor = conn.cursor()
-                        cursor.execute('''
-                        CREATE TABLE IF NOT EXISTS products (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        name TEXT NOT NULL,
-                        type TEXT NOT NULL,
-                        category TEXT NOT NULL,
-                        brand TEXT NOT NULL,
-                        price REAL NOT NULL,
-                        stock INTEGER,
-                        description TEXT,
-                        date_added TEXT NOT NULL DEFAULT CURRENT_DATE
-                        )
-                        ''')
-
-                        # éviter l'injection sql en utilisant des requêtes paramètrées
-                        sql = "INSERT INTO products (name, type, category, brand, price, stock, description) VALUES (?, ?, ?, ?, ?, ?, ?)"
-                        args = (new_product.name, new_product.type, new_product.category, new_product.brand, new_product.price, new_product.stock, new_product.description)
-                        cursor = conn.execute(sql, args)
-                        conn.commit()
-                        msg = "Product successfully added"
-
-                        # utiliser add_product...
-
-            except:
-                conn.rollback()
-                msg = "There was an error inserting the product"
+    if request.method == 'POST':
+        try:
+            name = request.form['product_name']
+            type = request.form.get('product_type')
+            category = request.form['product_category']
+            brand = request.form['product_brand']
+            price = request.form['product_price']
+            stock = request.form['product_stock']
+            desc = request.form['product_desc'] 
             
-            finally:
-                conn.close()
-                return render_template("result.html", msg=msg)
-                
+            new_product = Products(name, type, category, brand, price, stock, desc)
 
-'''
-@app.route('/modify/<int:product_id>', methods=['GET'])
-def modify_product(product_id):
-    product_data = Products.get_product_by_id("inventory.db", product_id)
-    if product_data:
-        product = {
-            'id': product_data[0],
-            'name': product_data[1],
-            'type': product_data[2],
-            'category': product_data[3],
-            'brand': product_data[4],
-            'price': product_data[5],
-            'stock': product_data[6],
-            'description': product_data[7],
-            'date_added': product_data[8]
-        }
-        return render_template('modify_product.html', product=product)
-    else:
-        return "Product not found", 404
+            with sqlite3.connect('inventory.db') as conn:
+                cursor = conn.cursor()
+                cursor.execute('''
+                CREATE TABLE IF NOT EXISTS products (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                type TEXT NOT NULL,
+                category TEXT NOT NULL,
+                brand TEXT NOT NULL,
+                price REAL NOT NULL,
+                stock INTEGER,
+                description TEXT,
+                date_added TEXT NOT NULL DEFAULT CURRENT_DATE
+                )
+                ''')
 
+                sql = "INSERT INTO products (name, type, category, brand, price, stock, description) VALUES (?, ?, ?, ?, ?, ?, ?)"
+                args = (new_product.name, new_product.type, new_product.category, new_product.brand, new_product.price, new_product.stock, new_product.description)
+                cursor = conn.execute(sql, args)
+                conn.commit()
+                msg = "Product successfully added"
 
-@app.route('/update_product/<int:product_id>', methods=['POST'])
-def update_product(product_id):
-    name = request.form['name']
-    product_type = request.form['type']
-    category = request.form['category']
-    brand = request.form['brand']
-    price = request.form['price']
-    stock = request.form['stock']
-    description = request.form['description']
-    
-    updated_product = Products(name, product_type, category, brand, price, stock, description)
-    updated_product.id = product_id
+        except:
+            conn.rollback()
+            msg = "There was an error inserting the product"
+        
+        finally:
+            conn.close()
+            return render_template("result.html", msg=msg)
 
-    updated_product.update_product("inventory.db")
-    return redirect(url_for('list'))
+@app.route('/update_product', methods=['POST'])
+@login_required
+def update_product():
+    if request.method == 'POST':
+        try:
+            product_id = request.form['product_id']
+            name = request.form['product_name']
+            product_type = request.form['modify_product_type']
+            category = request.form['modify_product_category']
+            brand = request.form['modify_product_brand']
+            price = request.form['product_price']
+            stock = request.form['product_stock']
+            description = request.form['product_desc']
+            
+            with sqlite3.connect('inventory.db') as conn:
+                cursor = conn.cursor()
+                cursor.execute('''
+                    UPDATE products 
+                    SET name=?, type=?, category=?, brand=?, price=?, stock=?, description=?
+                    WHERE id=?
+                ''', (name, product_type, category, brand, price, stock, description, product_id))
+                conn.commit()
+                msg = "Product successfully updated"
+        except Exception as e:
+            conn.rollback()
+            msg = f"Error updating product: {str(e)}"
+        finally:
+            return render_template("result.html", msg=msg)
 
-'''
-                
 @app.route('/delete_selected', methods=['POST'])
 def delete_selected():
     if request.method == 'POST':
@@ -217,8 +197,6 @@ def delete_selected():
                 with sqlite3.connect('inventory.db') as conn:
                     cursor = conn.cursor()
                     
-                    # Effacement dans la table
-                    # Ajouter logique pour les relations étrangères
                     sql = "DELETE FROM products WHERE id IN ({})".format(','.join('?' for _ in product_ids))
                     cursor.execute(sql, product_ids)
                     conn.commit()
@@ -233,20 +211,17 @@ def delete_selected():
             conn.close()
             return render_template('result.html', msg=msg)
 
-          
 @app.route('/product_list')
 @login_required
 def list():
-        with sqlite3.connect('inventory.db') as conn:
-                conn.row_factory = sqlite3.Row
-                cursor = conn.cursor()
-                cursor.execute('''SELECT * from products''')
-                rows = cursor.fetchall()
-                return render_template("product_list.html",rows=rows)
+    with sqlite3.connect('inventory.db') as conn:
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute('''SELECT * from products''')
+        rows = cursor.fetchall()
+        return render_template("product_list.html",rows=rows)
 
-        
-
-# Table customers
+# Customers routes
 @app.route('/addcustomer', methods=['POST', 'GET'])
 def addcustomer():
     if request.method == 'POST':
@@ -281,43 +256,9 @@ def addcustomer():
 
         finally:
             return render_template("customer_result.html", msg=msg)
-               
-
-@app.route('/modify/<int:customer_id>', methods=['GET'])
-def modify_product(customer_id):
-    product_data = Products.get_product_by_id("inventory.db", customer_id)
-    if product_data:
-        product = {
-            'id': product_data[0],
-            'first_name': product_data[1],
-            'last_name': product_data[2],
-            'email': product_data[3],
-            'date_added': product_data[4]
-        }
-        return render_template('modify_customer.html', product=product)
-    else:
-        return "Product not found", 404
-
-
-@app.route('/update_product/<int:product_id>', methods=['POST'])
-def update_product(product_id):
-    name = request.form['name']
-    product_type = request.form['type']
-    category = request.form['category']
-    brand = request.form['brand']
-    price = request.form['price']
-    stock = request.form['stock']
-    description = request.form['description']
-    
-    updated_product = Products(name, product_type, category, brand, price, stock, description)
-    updated_product.id = product_id
-
-    updated_product.update_product("inventory.db")
-    return redirect(url_for('list'))
-
 
 @app.route('/delete_selected_customer', methods=['POST'])
-def delete_selected_customer() -> None:
+def delete_selected_customer():
     if request.method == 'POST':
         try:
             customer_ids = request.form.getlist('customer_ids', type=int)
@@ -338,98 +279,68 @@ def delete_selected_customer() -> None:
             error_message = f"There was an error deleting the customers: {str(e)}"
             return render_template('customer_result.html', message=error_message)
 
-
-
 @app.route('/customer_list')
 @login_required
 def customers_list():
-            with sqlite3.connect('inventory.db') as conn:
-                 conn.row_factory = sqlite3.Row
-                 cursor = conn.cursor()
-                 cursor.execute('''SELECT * from customers''')
-                 rows = cursor.fetchall()
-                 return render_template("customer_list.html", rows=rows)
+    with sqlite3.connect('inventory.db') as conn:
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute('''SELECT * from customers''')
+        rows = cursor.fetchall()
+        return render_template("customer_list.html", rows=rows)
 
-
-
-
-
-# Analytics
-
-# Définir les couleurs principales
-plt.style.use('default')
-plt.rcParams['axes.prop_cycle'] = plt.cycler('color', ['#3498db', '#8e44ad'])  # bleu et violet
-
+# Analytics routes
 def generate_pie_chart():
-    # Connect to the database
     conn = sqlite3.connect('inventory.db')
     cursor = conn.cursor()
 
-    # Query the database to retrieve the brand data
     cursor.execute('SELECT brand, COUNT(*) FROM products GROUP BY brand')
     rows = cursor.fetchall()
 
-    # Extract the brand names and counts
     brands = [row[0] for row in rows]
     counts = [row[1] for row in rows]
 
-    # Create the pie chart
     plt.pie(counts, labels=brands, autopct='%1.1f%%')
-    plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+    plt.axis('equal')
     plt.title('Product Share by Brand')
 
-    # Save the plot to a file
     plt.savefig('static/product_share.png', transparent=True)
     plt.close()
 
 def generate_category_bar_chart():
-    # Connect to the database
     conn = sqlite3.connect('inventory.db')
     cursor = conn.cursor()
 
-    # Query the database to retrieve the category data
     cursor.execute('SELECT category, COUNT(*) FROM products GROUP BY category ORDER BY COUNT(*) DESC LIMIT 5')
     rows = cursor.fetchall()
 
-    # Extract the category names and counts
     categories = [row[0] for row in rows]
     counts = [row[1] for row in rows]
 
-    # Create the bar chart
     plt.bar(categories, counts)
     plt.xlabel('Category')
     plt.ylabel('Number of Products')
     plt.title('Top 5 Categories by Number of Products')
 
-    # Save the plot to a file
     plt.savefig('static/category_bar_chart.png', transparent=True)
     plt.close()
 
 def generate_price_histogram():
-    # Connect to the database
     conn = sqlite3.connect('inventory.db')
     cursor = conn.cursor()
 
-    # Query the database to retrieve the price data
     cursor.execute('SELECT price FROM products')
     rows = cursor.fetchall()
 
-    # Extract the price values
     prices = [row[0] for row in rows]
 
-    # Create the histogram
     plt.hist(prices, bins=50)
     plt.xlabel('Price')
     plt.ylabel('Frequency')
     plt.title('Distribution of Product Prices')
 
-    # Save the plot to a file
     plt.savefig('static/price_histogram.png', transparent=True)
     plt.close()
-
-
-    
-    
 
 @app.route('/analytics')
 @login_required
@@ -441,5 +352,3 @@ def product_share():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
