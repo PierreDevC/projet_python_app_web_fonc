@@ -227,6 +227,7 @@ def filter_products():
     type = request.args.get('type')
     category = request.args.get('category')
     brand = request.args.get('brand')
+    search = request.args.get('search')
 
     query = "SELECT * FROM products"
 
@@ -244,6 +245,10 @@ def filter_products():
     if brand:
         conditions.append("brand = ?")
         params += (brand,)
+
+    if search:
+        conditions.append("name LIKE ?")
+        params += (f"%{search}%",)
 
     if conditions:
         query += " WHERE " + " AND ".join(conditions)
