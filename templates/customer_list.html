@@ -24,8 +24,6 @@
     }
 </script>
 
-<!-- <a href="/enternew" class="btn btn-primary mb-3">Add New Product</a> -->
-
 <button type="button" class="buttons" data-bs-toggle="modal" data-bs-target="#exampleModal">
     Ajouter un nouveau client
   </button>
@@ -70,7 +68,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>        
         <div class="modal-body">
-        <form action="{{ url_for('addcustomer')}}" method="POST">
+        <form action="{{ url_for('add_customer')}}" method="POST">
         <div class="mb-3">
             <label for="CustomerName" class="form-label">First Name</label>
             <input type="text" class="form-control" name="first_name" placeholder="Enter customer first name">

@@ -1,5 +1,6 @@
+
 import os
-from flask import Flask,render_template, request, url_for, redirect, send_file
+from flask import Flask,render_template, request, url_for, redirect, send_file, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
@@ -39,10 +40,8 @@ class User(db.Model, UserMixin):
 class RegisterForm(FlaskForm):
     username = StringField(validators=[
                            InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
-
     password = PasswordField(validators=[
                              InputRequired(), Length(min=8, max=20)], render_kw={"placeholder": "Password"})
-
     submit = SubmitField('Register')
 
     def validate_username(self, username):
@@ -55,10 +54,8 @@ class RegisterForm(FlaskForm):
 class LoginForm(FlaskForm):
     username = StringField(validators=[
                            InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
-
     password = PasswordField(validators=[
                              InputRequired(), Length(min=8, max=20)], render_kw={"placeholder": "Password"})
-
     submit = SubmitField('Login')
 
 @app.route('/')
@@ -106,13 +103,10 @@ def register():
 
     return render_template('register.html', form=form)
 
-# Products/customers/orders logic
-@app.route('/enternew')
-def new_product():
-    return render_template('add_product.html')
+# Product Routes
 
-@app.route('/addrec',methods=['POST', 'GET'])
-def addrec():
+@app.route('/add_product',methods=['POST', 'GET'])
+def add_product():
     if request.method == 'POST':
         try:
             name = request.form['product_name']
@@ -184,8 +178,8 @@ def update_product():
         finally:
             return render_template("result.html", msg=msg, user=current_user)
 
-@app.route('/delete_selected', methods=['POST'])
-def delete_selected():
+@app.route('/delete_product', methods=['POST'])
+def delete_product():
     if request.method == 'POST':
         try:
             product_ids = request.form.getlist('product_ids')
@@ -261,8 +255,19 @@ def filter_products():
         return render_template("product_list.html", rows=rows)
 
 # Customers routes
-@app.route('/addcustomer', methods=['POST', 'GET'])
-def addcustomer():
+
+@app.route('/customer_list')
+@login_required
+def customers_list():
+    with sqlite3.connect('inventory.db') as conn:
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute('''SELECT * from customers''')
+        rows = cursor.fetchall()
+        return render_template("customer_list.html", rows=rows, user=current_user)
+
+@app.route('/add_customer', methods=['POST', 'GET'])
+def add_customer():
     if request.method == 'POST':
         try:
             first_name = request.form['first_name']
@@ -297,6 +302,7 @@ def addcustomer():
             return render_template("customer_result.html", msg=msg)
 
 @app.route('/delete_selected_customer', methods=['POST'])
+@login_required
 def delete_selected_customer():
     if request.method == 'POST':
         try:
@@ -318,15 +324,75 @@ def delete_selected_customer():
             error_message = f"There was an error deleting the customers: {str(e)}"
             return render_template('customer_result.html', message=error_message, user=current_user)
 
-@app.route('/customer_list')
+
+
+# Order routes
+@app.route('/order_list')
 @login_required
-def customers_list():
+def order_list():
     with sqlite3.connect('inventory.db') as conn:
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
-        cursor.execute('''SELECT * from customers''')
-        rows = cursor.fetchall()
-        return render_template("customer_list.html", rows=rows, user=current_user)
+        cursor.execute('''SELECT o.id, o.customer_id, o.product_id, o.quantity, 
+                          c.first_name, c.last_name, 
+                          p.name, p.stock
+                          FROM orders o 
+                          JOIN customers c ON o.customer_id = c.id 
+                          JOIN products p ON o.product_id = p.id''')
+        orders = cursor.fetchall()
+        return render_template("order_list.html", orders=orders)
+    
+@app.route('/add_order', methods=['POST'])
+@login_required
+def add_order():
+    try:
+        customer_id = request.form['customer_id']
+        product_id = request.form['product_id']
+        quantity = int(request.form['quantity'])
+
+        with sqlite3.connect('inventory.db') as conn:
+            cursor = conn.cursor()
+            cursor.execute('SELECT stock FROM products WHERE id=?', (product_id,))
+            product_stock = cursor.fetchone()[0]
+            if product_stock < quantity:
+                flash('Not enough stock available', 'error')
+                return redirect(url_for('order_list'))
+
+            cursor.execute('INSERT INTO orders (customer_id, product_id, quantity) VALUES (?, ?, ?)', (customer_id, product_id, quantity))
+            cursor.execute('UPDATE products SET stock=stock-? WHERE id=?', (quantity, product_id))
+            conn.commit()
+
+            flash('Order added successfully', 'success')
+    except sqlite3.Error as e:
+        flash(f'Error adding order: {str(e)}', 'error')
+
+    return redirect(url_for('order_list'))
+
+
+@app.route('/delete_order/<int:order_id>', methods=['POST'])
+@login_required
+def delete_order(order_id):
+    if request.method == 'POST':
+        try:
+            with sqlite3.connect('inventory.db') as conn:
+                cursor = conn.cursor()
+                cursor.execute('SELECT product_id, quantity FROM orders WHERE id=?', (order_id,))
+                order_data = cursor.fetchone()
+                if order_data is None:
+                    error_message = "Order not found"
+                else:
+                    product_id, quantity = order_data
+                    cursor.execute('UPDATE products SET stock=stock+? WHERE id=?', (quantity, product_id))
+                    cursor.execute('DELETE FROM orders WHERE id=?', (order_id,))
+                    conn.commit()
+                    success_message = "Order successfully deleted"
+
+            return render_template('order_result.html', message=success_message or error_message)
+
+        except sqlite3.Error as e:
+            error_message = f"There was an error deleting the order: {str(e)}"
+            return render_template('result.html', message=error_message, user=current_user)
+
 
 # Analytics routes
 def generate_pie_chart():
