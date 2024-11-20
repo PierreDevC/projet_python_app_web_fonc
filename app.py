@@ -153,7 +153,7 @@ def addrec():
         
         finally:
             conn.close()
-            return render_template("result.html", msg=msg)
+            return render_template("result.html", msg=msg, user=current_user)
 
 @app.route('/update_product', methods=['POST'])
 @login_required
@@ -182,7 +182,7 @@ def update_product():
             conn.rollback()
             msg = f"Error updating product: {str(e)}"
         finally:
-            return render_template("result.html", msg=msg)
+            return render_template("result.html", msg=msg, user=current_user)
 
 @app.route('/delete_selected', methods=['POST'])
 def delete_selected():
@@ -208,7 +208,7 @@ def delete_selected():
         
         finally:
             conn.close()
-            return render_template('result.html', msg=msg)
+            return render_template('result.html', msg=msg, user=current_user)
 
 @app.route('/product_list')
 @login_required
@@ -218,7 +218,7 @@ def list():
         cursor = conn.cursor()
         cursor.execute('''SELECT * from products''')
         rows = cursor.fetchall()
-        return render_template("product_list.html",rows=rows)
+        return render_template("product_list.html",rows=rows, user=current_user)
     
 
 @app.route('/filter_products', methods=['GET'])
@@ -316,7 +316,7 @@ def delete_selected_customer():
 
         except sqlite3.Error as e:
             error_message = f"There was an error deleting the customers: {str(e)}"
-            return render_template('customer_result.html', message=error_message)
+            return render_template('customer_result.html', message=error_message, user=current_user)
 
 @app.route('/customer_list')
 @login_required
@@ -326,7 +326,7 @@ def customers_list():
         cursor = conn.cursor()
         cursor.execute('''SELECT * from customers''')
         rows = cursor.fetchall()
-        return render_template("customer_list.html", rows=rows)
+        return render_template("customer_list.html", rows=rows, user=current_user)
 
 # Analytics routes
 def generate_pie_chart():

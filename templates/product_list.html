@@ -45,52 +45,69 @@
     document.getElementById('modify_product_stock').value = data.stock;
     document.getElementById('modify_product_desc').value = data.description;
     }
+
+    const button = document.querySelector('.buttons');
+    const collapse = document.querySelector('#collapseExample');
 </script>
 
 <button type="button" class="buttons" data-bs-toggle="modal" data-bs-target="#exampleModal">
     Ajouter un nouveau produit
 </button>
+
+  <p>
+    <button class="buttons" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        <i class="bi bi-filter me-1"></i> Filtrer
+    </button>
+  </p>
+  <div class="collapse" id="collapseExample">
+    <div class="card card-body">
+        <form action="/filter_products" method="get">
+            <div class="mb-3">
+                <label for="type" class="form-label">Type</label>
+                <select class="form-select" name="type" id="type">
+                    <option value="">Tous les types</option>
+                    <option value="Laptop">Laptop</option>
+                    <option value="Desktop">Desktop</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="category" class="form-label">Catégorie</label>
+                <select class="form-select" name="category" id="category">
+                    <option value="">Toutes les catégories</option>
+                    <option value="Productivity">Productivity</option>
+                    <option value="Gaming">Gaming</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="brand" class="form-label">Marque</label>
+                <select class="form-select" name="brand" id="brand">
+                    <option value="">Toutes les marques</option>
+                    <option value="Acer">Acer</option>
+                    <option value="Apple">Apple</option>
+                    <option value="Asus">Asus</option>
+                    <option value="Dell">Dell</option>
+                    <option value="HP">HP</option>
+                    <option value="Lenovo">Lenovo</option>
+                    <option value="Microsoft">Microsoft</option>
+                    <option value="Samsung">Samsung</option>
+                    <option value="Sony">Sony</option>
+                    <option value="Toshiba">Toshiba</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="search" class="form-label">Rechercher</label>
+                <input type="text" class="form-control" name="search" id="search" placeholder="Rechercher le nom du produit">
+            </div>
+            <a href="/product_list" class="btn btn-danger">Annuler les filtres</a>
+            <button type="submit" class="btn btn-primary">Appliquer le filtre</button>
+        </form>
+    </div>
+  </div>
+
 <br>
 <br>
-<form action="/filter_products" method="get">
-    <div class="mb-3">
-        <label for="type" class="form-label text-white">Type</label>
-        <select class="form-select" name="type" id="type">
-            <option value="">All</option>
-            <option value="Laptop">Laptop</option>
-            <option value="Desktop">Desktop</option>
-        </select>
-    </div>
-    <div class="mb-3">
-        <label for="category" class="form-label text-white">Category</label>
-        <select class="form-select" name="category" id="category">
-            <option value="">All</option>
-            <option value="Productivity">Productivity</option>
-            <option value="Gaming">Gaming</option>
-        </select>
-    </div>
-    <div class="mb-3">
-        <label for="brand" class="form-label text-white">Brand</label>
-        <select class="form-select" name="brand" id="brand">
-            <option value="">All</option>
-            <option value="Acer">Acer</option>
-            <option value="Apple">Apple</option>
-            <option value="Asus">Asus</option>
-            <option value="Dell">Dell</option>
-            <option value="HP">HP</option>
-            <option value="Lenovo">Lenovo</option>
-            <option value="Microsoft">Microsoft</option>
-            <option value="Samsung">Samsung</option>
-            <option value="Sony">Sony</option>
-            <option value="Toshiba">Toshiba</option>
-        </select>
-    </div>
-    <div class="mb-3">
-        <label for="search" class="form-label text-white">Search</label>
-        <input type="text" class="form-control" name="search" id="search" placeholder="Search product name">
-    </div>
-    <button type="submit" class="btn btn-primary">Apply Filter</button>
-</form>
+
+
 
 
 <form method="POST" action="/delete_selected" id="deleteForm">
