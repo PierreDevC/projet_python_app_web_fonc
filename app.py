@@ -48,8 +48,10 @@ class RegisterForm(FlaskForm):
         existing_user_username = User.query.filter_by(
             username=username.data).first()
         if existing_user_username:
+            flash('Ce nom d\'utilisateur existe déja.')
             raise ValidationError(
                 'That username already exists. Please choose a different one.')
+            
 
 class LoginForm(FlaskForm):
     username = StringField(validators=[
@@ -70,10 +72,10 @@ def login():
         if user:
             if bcrypt.check_password_hash(user.password, form.password.data):
                 login_user(user)
-                flash('Successfully logged in!', 'success')
+                flash('Connexion réussie!', 'success')
                 return redirect(url_for('dashboard'))
             else:
-                flash('Invalid password. Please try again.', 'danger')
+                flash('Mot de passe invalide. Veuillez réessayer.', 'danger')
         else:
             flash("Nom d'utilisateur ou mot de passe incorrect.", 'danger')
             return redirect(url_for('login'))
@@ -257,7 +259,6 @@ def filter_products():
         return render_template("product_list.html", rows=rows)
 
 # Customers routes
-
 @app.route('/customer_list')
 @login_required
 def customer_list():
@@ -358,6 +359,34 @@ def delete_selected_customer():
             return redirect(url_for('customer_list'))
 
 
+# en progression...
+@app.route('/filter_customers', methods=['GET'])
+@login_required
+def filter_customers():
+    search = request.args.get('search')
+
+    query = "SELECT * FROM customers"
+
+    conditions = []
+    params = ()
+
+    if search:
+        conditions.append("first_name LIKE ?")
+        params += (f"%{search}%",)
+    
+    if conditions:
+        query += " WHERE " + " AND ".join(conditions)
+
+    with sqlite3.connect('inventory.db') as conn:
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute(query, params)
+        rows = cursor.fetchall()
+        return render_template("customer_list.html", rows=rows)
+
+
+
+
 # Order routes
 @app.route('/order_list')
 @login_required
@@ -387,14 +416,14 @@ def add_order():
             cursor.execute('SELECT stock FROM products WHERE id=?', (product_id,))
             product_stock = cursor.fetchone()[0]
             if product_stock < quantity:
-                flash('Not enough stock available', 'error')
+                flash('Pas assez de stock disponible', 'error')
                 return redirect(url_for('order_list'))
 
             cursor.execute('INSERT INTO orders (customer_id, product_id, quantity) VALUES (?, ?, ?)', (customer_id, product_id, quantity))
             cursor.execute('UPDATE products SET stock=stock-? WHERE id=?', (quantity, product_id))
             conn.commit()
 
-            flash('Order added successfully', 'success')
+            flash('Commande ajoutée avec succès', 'success')
     except Exception as e:
         flash(f'Error adding order: {str(e)}', 'error')
 
@@ -411,19 +440,19 @@ def delete_order(order_id):
                 cursor.execute('SELECT product_id, quantity FROM orders WHERE id=?', (order_id,))
                 order_data = cursor.fetchone()
                 if order_data is None:
-                    error_message = "Order not found"
+                    flash('La commande n\'a pas été trouvée', 'success')
                 else:
                     product_id, quantity = order_data
                     cursor.execute('UPDATE products SET stock=stock+? WHERE id=?', (quantity, product_id))
                     cursor.execute('DELETE FROM orders WHERE id=?', (order_id,))
                     conn.commit()
-                    success_message = "Order successfully deleted"
+                    flash('Commande supprimée avec succès', 'success')
 
-            return render_template('order_result.html', message=success_message or error_message)
+            return redirect(url_for('order_list'))
 
-        except sqlite3.Error as e:
-            error_message = f"There was an error deleting the order: {str(e)}"
-            return render_template('result.html', message=error_message, user=current_user)
+        except Exception as e:
+            flash(f'Erreur lors de la suppression de la commande: {str(e)}')
+            return redirect(url_for('order_list'))
 
 
 # Analytics routes
