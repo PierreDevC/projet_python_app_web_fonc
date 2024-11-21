@@ -28,30 +28,36 @@
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 40px 10px 30px rgba(0,0,0,0.15);
+            border: 1px solid #273859;
         }
         #datatable thead {
-            background-color: #0D1E47;
+            background-color: #273859;
             color: white;
         }
         #datatable thead th {
             padding: 12px;
             text-align: left;
             font-weight: bold;
+            color: white;
+            border-bottom: 1px solid #42558a;
         }
         #datatable tbody td {
             padding: 12px;
-            border: 1px solid #ddd;
+            border: none;
             vertical-align: middle;
+            color: white;
         }
         /* Alternance des couleurs de tables */
+        /* old color #f7f7f7;*/
         #datatable tbody tr:nth-child(even) {
-            background-color: #f7f7f7;
+            background-color: #273859
         }
+        /* old color #ffffff; */
         #datatable tbody tr:nth-child(odd) {
-            background-color: #ffffff;
+            background-color: #142240
         }
         #datatable tbody tr:hover {
-            background-color: #e9e9e9;
+            opacity: 1.5;
             transition: background-color 0.2s ease;
         }
         #datatable thead th:first-child {
@@ -121,6 +127,11 @@
 		color: #101935;
 		background-color: #101935;
 		}
+
+        input.table-checkbox {
+        width: 15px;
+        height: 15px;
+        }
     </style>
 </head>
 <body>
@@ -174,12 +185,25 @@
                     </div>
                 </div>
             </div>
-        <!-- Tables -->
-        <div class="col py-3">
-            {% block content %}
-            <!-- Contenu de la page -->
-            {% endblock %}
-        </div>
+            <!-- Main Content -->
+            <div class="col py-3">
+                <!-- Flash Messages -->
+                <div class="alert-container">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+
+                <!-- Page Content -->
+                {% block content %}{% endblock %}
+            </div>
      </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
