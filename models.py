@@ -50,6 +50,9 @@ class Customers(BaseModel, db.Model):
     first_name = Column(String(50), nullable=False)
     last_name = Column(String(50), nullable=False)
     email = Column(String(120), nullable=False, unique=True)
+    # city = Column(String(50), nullable=False)
+    # province Column(String(50), nullable=False)
+    # postal_code = Column(String(7) nullable=False)
     
     orders = relationship('Orders', back_populates='customer')
     
@@ -58,6 +61,9 @@ class Customers(BaseModel, db.Model):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
+       # self.city = city
+       # self.province = province
+       # self.postal_code = zipcode
 
 class Orders(BaseModel, db.Model):
     __tablename__ = 'orders'

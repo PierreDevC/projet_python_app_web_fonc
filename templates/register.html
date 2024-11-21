@@ -36,23 +36,23 @@
     <div class="container">
         <div class="row d-flex justify-content-center mt-5">
             <div class="card py-3 px-4">
-                <h1 class="text-center mb-3 mt-2 text-white">Register</h1>
+                <h1 class="text-center mb-3 mt-2 text-white">Créer un compte</h1>
                 <form method="POST" action="">
                     {{ form.hidden_tag() }}
                     <div class="mb-3">
-                        <label for="username" class="form-label text-white">Username</label>
-                        {{ form.username(class="form-control", id="username", placeholder="Choose a Username") }}
+                        <label for="username" class="form-label text-white">Nom d'utilisateur</label>
+                        {{ form.username(class="form-control", id="username", placeholder="Entrez un nom d'utilisateur") }}
                     </div>
                     <div class="mb-3">
-                        <label for="password" class="form-label text-white">Password</label>
-                        {{ form.password(class="form-control", id="password", placeholder="Choose a Password") }}
+                        <label for="password" class="form-label text-white">Mot de passe</label>
+                        {{ form.password(class="form-control", id="password", placeholder="Entrez un mot de passe") }}
                     </div>
                     <div class="text-center">
                         {{ form.submit(class="btn submit-button text-white") }}
                     </div>
                 </form>
                 <div class="text-center mt-3">
-                    <a href="{{ url_for('login') }}" class="text-decoration-none text-white">Already have an account? Log In</a>
+                    <a href="{{ url_for('login') }}" class="text-decoration-none text-white">Vous avez déja un compte? Connectez-vous</a>
                 </div>
             </div>
         </div>

@@ -3,11 +3,9 @@
 {% block title %}Products{% endblock %}
 
 {% block content %}
-<h2 class="text-white">Produits</h2>
-<br>
 
 <script>
-    function toggleDeleteButton() {
+    function toggleDeleteProductButton() {
         const checkboxes = document.querySelectorAll('input[name="product_ids"]:checked');
         const deleteBtn = document.getElementById('deleteBtn');
         
@@ -18,7 +16,7 @@
         }
     }
 
-    function selectAllCheckboxes() {
+    function selectAllCheckboxesProducts() {
         var selectAllCheckbox = document.getElementById('selectAll');
         var checkboxes = document.getElementsByName('product_ids');
 
@@ -50,13 +48,19 @@
     const collapse = document.querySelector('#collapseExample');
 </script>
 
+<h2 class="text-white">Produits</h2>
+<p class="text-white">Gérez vos produits avec efficacité ! Notre système d'inventaire vous permet de stocker, de suivre et de gérer vos produits de manière centralisée. <br>
+    Ajoutez, modifiez ou supprimez des produits, gérez vos stocks et vos prix, et suivez vos ventes en temps réel.
+</p>
+
+
 <button type="button" class="buttons" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Ajouter un nouveau produit
+    <i class="bi bi-plus-circle-fill"></i> &nbsp;Ajouter un nouveau produit 
 </button>
 
   <p>
     <button class="buttons" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-        <i class="bi bi-filter me-1"></i> Filtrer
+        <i class="bi bi-search"></i> &nbsp;Filtrer et rechercher  
     </button>
   </p>
   <div class="collapse" id="collapseExample">
@@ -104,9 +108,6 @@
     </div>
   </div>
 
-<br>
-<br>
-
 
 
 
@@ -114,14 +115,14 @@
     <table id="datatable" class="table table-striped table-hover">
         <thead>
             <tr>
-                <th><input type="checkbox" id="selectAll" onchange="selectAllCheckboxes(); toggleDeleteButton()"> &nbsp; Sélectionner</th>
+                <th><input class="table-checkbox" type="checkbox" id="selectAll" onchange="selectAllCheckboxesProducts(); toggleDeleteProductButton()"> &nbsp; Cocher</th>
                 <th>Id</th>
                 <th>Nom</th>
                 <th>Type</th>
                 <th>Catégorie</th>
                 <th>Marque</th>
                 <th>Prix</th>
-                <th>Quantité en Stock</th>
+                <th>Stock</th>
                 <th>Description</th>
                 <th>Actions</th>
             </tr>
@@ -129,7 +130,7 @@
         <tbody>
             {% for row in rows %}
             <tr>
-                <td><input type="checkbox" name="product_ids" value="{{ row['id'] }}" onchange="toggleDeleteButton()"></td>
+                <td><input class="table-checkbox" type="checkbox" name="product_ids" value="{{ row['id'] }}" onchange="toggleDeleteProductButton()"></td>
                 <td>{{ row['id']}}</td>
                 <td>{{ row['name'] }}</td>
                 <td>{{ row['type'] }}</td>
@@ -151,16 +152,15 @@
                     data-stock="{{ row['stock'] }}"
                     data-description="{{ row['description'] }}"
                     onclick="populateModifyModal(this)">
-                Modifier
+                    <i class="fa bi-pencil-square"></i>
             </button>
-            
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 
-    <button type="submit" class="btn btn-danger delete-btn" id="deleteBtn" style="display: none;">Delete Selected Products</button>
+    <button type="submit" class="btn btn-danger delete-btn" id="deleteBtn" style="display: none;">Effacer les produits sélectionnés <i class="bi bi-trash-fill"></i></button>
 </form>
 
 <a href="/" class="buttons">Aller au tableau de bord</a>

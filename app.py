@@ -42,7 +42,7 @@ class RegisterForm(FlaskForm):
                            InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
     password = PasswordField(validators=[
                              InputRequired(), Length(min=8, max=20)], render_kw={"placeholder": "Password"})
-    submit = SubmitField('Register')
+    submit = SubmitField('Créer le compte')
 
     def validate_username(self, username):
         existing_user_username = User.query.filter_by(
@@ -56,7 +56,7 @@ class LoginForm(FlaskForm):
                            InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
     password = PasswordField(validators=[
                              InputRequired(), Length(min=8, max=20)], render_kw={"placeholder": "Password"})
-    submit = SubmitField('Login')
+    submit = SubmitField('Se connecter')
 
 @app.route('/')
 def home():
@@ -70,7 +70,13 @@ def login():
         if user:
             if bcrypt.check_password_hash(user.password, form.password.data):
                 login_user(user)
+                flash('Successfully logged in!', 'success')
                 return redirect(url_for('dashboard'))
+            else:
+                flash('Invalid password. Please try again.', 'danger')
+        else:
+            flash("Nom d'utilisateur ou mot de passe incorrect.", 'danger')
+            return redirect(url_for('login'))
     return render_template('login.html', form=form)
 
 @app.route('/dashboard', methods=['GET', 'POST'])
@@ -81,7 +87,6 @@ def dashboard():
     products = c.execute('SELECT * FROM products LIMIT 5').fetchall()
     customers = c.execute('SELECT * FROM customers LIMIT 5').fetchall()
     conn.close()
-
     return render_template('dashboard.html', products=products, customers=customers, user=current_user)
 
 @app.route('/logout', methods=['GET', 'POST'])
@@ -93,18 +98,15 @@ def logout():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
-
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data)
         new_user = User(username=form.username.data, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
         return redirect(url_for('login'))
-
     return render_template('register.html', form=form)
 
 # Product Routes
-
 @app.route('/add_product',methods=['POST', 'GET'])
 def add_product():
     if request.method == 'POST':
@@ -139,15 +141,15 @@ def add_product():
                 args = (new_product.name, new_product.type, new_product.category, new_product.brand, new_product.price, new_product.stock, new_product.description)
                 cursor = conn.execute(sql, args)
                 conn.commit()
-                msg = "Product successfully added"
+                flash(f'Le produit a été ajouté avec succès!', 'success')
 
-        except:
+        except Exception as e:
             conn.rollback()
-            msg = "There was an error inserting the product"
+            flash(f'Il y a eu une erreur lors de l\'ajout du produit : {e}', 'danger')
         
         finally:
             conn.close()
-            return render_template("result.html", msg=msg, user=current_user)
+            return redirect(url_for('product_list', user=current_user))
 
 @app.route('/update_product', methods=['POST'])
 @login_required
@@ -171,12 +173,12 @@ def update_product():
                     WHERE id=?
                 ''', (name, product_type, category, brand, price, stock, description, product_id))
                 conn.commit()
-                msg = "Product successfully updated"
+                flash('Product successfully updated!', 'success')
         except Exception as e:
             conn.rollback()
-            msg = f"Error updating product: {str(e)}"
+            flash(f'Error updating product: {str(e)}', 'danger')
         finally:
-            return render_template("result.html", msg=msg, user=current_user)
+            return redirect(url_for('product_list', user=current_user))
 
 @app.route('/delete_product', methods=['POST'])
 def delete_product():
@@ -185,7 +187,7 @@ def delete_product():
             product_ids = request.form.getlist('product_ids')
             
             if not product_ids:
-                msg = "No products selected for deletion."
+                flash('Pas de produit sélectionné à supprimer. Veuillez sélectionner au moins un produit', 'danger')
             else:
                 with sqlite3.connect('inventory.db') as conn:
                     cursor = conn.cursor()
@@ -194,19 +196,19 @@ def delete_product():
                     cursor.execute(sql, product_ids)
                     conn.commit()
                     
-                    msg = f"{len(product_ids)} product(s) successfully deleted."
+                    flash(f'{len(product_ids)} produits supprimé(s) avec succès.', 'success')
         
         except Exception as e:
             conn.rollback()
-            msg = f"There was an error deleting the products: {str(e)}"
+            flash(f'Erreur lors de la suppression du produit(s): {str(e)}', 'danger')
         
         finally:
             conn.close()
-            return render_template('result.html', msg=msg, user=current_user)
+            return redirect(url_for('product_list'))
 
 @app.route('/product_list')
 @login_required
-def list():
+def product_list():
     with sqlite3.connect('inventory.db') as conn:
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
@@ -258,7 +260,7 @@ def filter_products():
 
 @app.route('/customer_list')
 @login_required
-def customers_list():
+def customer_list():
     with sqlite3.connect('inventory.db') as conn:
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
@@ -293,13 +295,42 @@ def add_customer():
                 cursor.execute(sql, args)
                 conn.commit()
                 msg = "Customer successfully added"
+                flash(f'Le client a été ajouté avec succès!', 'success')
 
-        except sqlite3.Error as e:
+        except Exception as e:
             conn.rollback()
-            msg = f"There was an error inserting the customer: {e}"
+            flash(f'Il y a eu une erreur lors de l\'ajout du client : {e}', 'danger')
 
         finally:
-            return render_template("customer_result.html", msg=msg)
+            conn.close()
+            return redirect(url_for('customer_list'))
+
+
+@app.route('/update_customer', methods=['POST'])
+@login_required
+def update_customer():
+    if request.method == 'POST':
+        try:
+            customer_id = request.form['id']
+            first_name = request.form['first_name']
+            last_name = request.form['last_name']
+            email = request.form['email']
+            
+            with sqlite3.connect('inventory.db') as conn:
+                cursor = conn.cursor()
+                cursor.execute('''
+                    UPDATE customers
+                    SET first_name=?, last_name=?, email=?
+                    WHERE id=?
+                ''', (first_name, last_name, email, customer_id))
+                conn.commit()
+                flash('Le client a été modifié avec succès!', 'success')
+        except Exception as e:
+            conn.rollback()
+            flash(f'Erreur lors de la modification du client: {str(e)}', 'danger')
+        finally:
+            return redirect(url_for('customer_list', user=current_user))
+
 
 @app.route('/delete_selected_customer', methods=['POST'])
 @login_required
@@ -309,21 +340,22 @@ def delete_selected_customer():
             customer_ids = request.form.getlist('customer_ids', type=int)
 
             if not customer_ids:
-                error_message = "No customer selected for deletion"
+                flash('Pas de client sélectionné à effacer. Veuillez sélectionner au moins un client', 'danger')
             else:
                 with sqlite3.connect('inventory.db') as conn:
                     cursor = conn.cursor()
                     sql = "DELETE FROM customers WHERE id IN (%s)" % ','.join('?' for _ in customer_ids)
                     cursor.execute(sql, customer_ids)
                     conn.commit()
-                    success_message = f"{len(customer_ids)} customer(s) successfully deleted."
-
-            return render_template('customer_result.html', message=success_message or error_message)
+                    flash(f'{len(customer_ids)} clients supprimé(s) avec succès.', 'success')
 
         except sqlite3.Error as e:
-            error_message = f"There was an error deleting the customers: {str(e)}"
-            return render_template('customer_result.html', message=error_message, user=current_user)
+            conn.rollback()
+            flash(f'Erreur lors de la suppression du client(s): {str(e)}', 'danger')
 
+        finally:
+            conn.close()
+            return redirect(url_for('customer_list'))
 
 
 # Order routes
@@ -363,7 +395,7 @@ def add_order():
             conn.commit()
 
             flash('Order added successfully', 'success')
-    except sqlite3.Error as e:
+    except Exception as e:
         flash(f'Error adding order: {str(e)}', 'error')
 
     return redirect(url_for('order_list'))
