@@ -1,37 +1,9 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Login</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-    <style>
-        body {
-            background-color: #19123B;
-        }
-        .card {
-            border: none;
-            border-top: 5px solid rgb(176,106,252);
-            background: #212042;
-            color: #57557A;
-            width: 500px;
-            margin: 50px auto;
-        }
-        .submit-button {
-            padding: 13px 50px;
-            background-color: rebeccapurple;
-            border: none;
-            border-radius: 70px;
-            transition: 0.3s;
-        }
-        .submit-button:hover {
-            background-image: linear-gradient(144deg, #AF40FF, #5B42F3 50%, #00DDEB);
-            box-shadow: 5px 6px 20px rebeccapurple;
-            transform: scale(1.05);
-        }
-    </style>
-</head>
-<body>
+{% extends 'homebase.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
     <div class="container">
         <div class="row d-flex justify-content-center mt-5">
             <div class="card py-3 px-4">
@@ -56,5 +28,4 @@
             </div>
         </div>
     </div>
-</body>
-</html>
+{% endblock %}

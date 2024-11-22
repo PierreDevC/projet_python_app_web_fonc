@@ -4,22 +4,19 @@
 
 {% block content %}
 <div class="d-flex flex-column justify-content-center w-100 h-100">
-    <div class="container text-center">
+    <div class="container-fluid container-sm text-center">
         <div class="row align-items-center">
-          <div class="col">
-            <h1 class="text-white">PierreAb Inventory</h1>
+          <div class="col text-start">
+            <h1 class="text-white logo-text">PIERAB</h1>
+            <h1 class="text-white">Inventory Management Pro</h1>
             <br>
 
-            <p class="text-white lead">Bienvenue dans PierreAb Inventory Management System, votre solution complète pour gérer vos stocks et optimiser vos opérations logistiques. Notre système vous permet de suivre vos produits, de gérer vos commandes et vos livraisons, et de prendre des décisions éclairées grâce à des rapports détaillés. Simplifiez vos processus, réduisez vos coûts et augmentez votre productivité avec PierreAb Inventory Management System.</p>
-            <a href="{{ url_for('login') }}">
-                <button class="home-button">Se connecter</button>
-              </a>
-              <a href="{{ url_for('register') }}">
-                <button class="home-button">Créer un compte</button>
-              </a>
+            <p class="text-white lead">Bienvenue dans PierAb Inventory Management System, votre solution complète pour gérer vos stocks et optimiser vos opérations logistiques. Notre système vous permet de suivre vos produits, de gérer vos commandes et vos livraisons, et de prendre des décisions éclairées grâce à des rapports détaillés. Simplifiez vos processus, réduisez vos coûts et augmentez votre productivité avec PierreAb Inventory Management System.</p>
+            <a href="{{ url_for('login') }}"><button class="home-button">Se connecter</button></a>
+             <a href="{{ url_for('register') }}"><button class="home-button">Créer un compte</button></a>
           </div>
           <div class="col">
-            Image
+            <img src="/static/homepage_vector_v1.svg" alt="homepage_vector" class="">
           </div>
         </div>
       </div>

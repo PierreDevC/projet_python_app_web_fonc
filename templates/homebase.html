@@ -9,62 +9,95 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <title>{% block title %}Homebase{% endblock %}</title>
     <style>
-body {
-	background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-	background-size: 400% 400%;
-	animation: gradient 15s ease infinite;
-	height: 100vh;
-}
+    body {
+    background: linear-gradient(-45deg, #5649e0, #7a4bff, #6600cc, #921bb6, #b300ff);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    height: 90vh;
+    }
 
-@keyframes gradient {
-	0% {
-		background-position: 0% 50%;
-	}
-	50% {
-		background-position: 100% 50%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
-}
+      @keyframes gradient {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+    .nav-link {
+      padding: 10px 50px 10px 50px;
+      margin: 10px;
+      transition-duration: 0.4s;
+      cursor: pointer;
+      border-radius: 70px;
+      color: white;
+    }
+    .nav-link:hover {
+      background-color: white;
+      color: black;
+    }
+    .home-button {
+        margin: 10px;
+        padding: 13px 50px;
+        background-image: linear-gradient(144deg, #AF40FF, #5B42F3 50%, #00DDEB);
+        border: none;
+        border-radius: 70px;
+        transition: 0.1s;
+        text-decoration: none;
+        color: white;
+    }
+    .home-button:hover {
+        box-shadow: 5px 6px 20px rebeccapurple;
+        transform: scale(1.05);
+        opacity: 1.10;
+    }
+    .home-buttons {
+        background-color:black;
+        color: white;
+        padding:20px;
+    }
+    .logo-text {
+      font-size: 100px;
+    }
 
-        .home-button {
-            margin: 10px;
+    /*Login and register*/
+            .card {
+            border: none;
+            border-top: 5px solid rgb(176,106,252);
+            background: #212042;
+            color: #57557A;
+            width: 500px;
+            margin: 50px auto;
+        }
+        .submit-button {
             padding: 13px 50px;
-            background-image: linear-gradient(144deg, #AF40FF, #5B42F3 50%, #00DDEB);
+            background-color: rebeccapurple;
             border: none;
             border-radius: 70px;
             transition: 0.3s;
-            text-decoration: none;
-            color: white;
-
         }
-        .home-button:hover {
+        .submit-button:hover {
+            background-image: linear-gradient(144deg, #AF40FF, #5B42F3 50%, #00DDEB);
             box-shadow: 5px 6px 20px rebeccapurple;
             transform: scale(1.05);
-            opacity: 1.10;
         }
-
-        .home-buttons {
-            background-color:black;
-            color: white;
-            padding:20px;
-        }
-
     </style>
 </head>
 <body>
     <nav class="navbar navbar-light navbar-expand-md">
         <div class="container-fluid justify-content-center">
-          <a class="navbar-brand text-white" href="#">PierreAb Inventory</a>
+          <a class="navbar-brand text-white" href="/">PIERAB</a>
           <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navcol-1">
             <span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span>
           </button>
           <div id="navcol-1" class="collapse navbar-collapse flex-grow-0">
             <ul class="navbar-nav text-center">
-              <li class="nav-item"><a class="nav-link text-white" href="#">Acceuil</a></li>
-              <li class="nav-item"><a class="nav-link text-white" href="#">Connexion</a></li>
-              <li class="nav-item"><a class="nav-link text-white" href="#">Création de compte</a></li>
+              <li class="nav-item"><a class="nav-link fs-5" href="/">Acceuil</a></li>
+              <li class="nav-item"><a class="nav-link fs-5" href="{{ url_for('login') }}">Connexion</a></li>
+              <li class="nav-item"><a class="nav-link fs-5" href="{{ url_for('register') }}">Créer un compte</a></li>
             </ul>
           </div>
         </div>
