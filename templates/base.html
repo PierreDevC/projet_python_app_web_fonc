@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <title>{% block title %}My App{% endblock %}</title>
     <style>
         /* General body styling */
@@ -138,8 +139,8 @@
         <div class="row flex-nowrap">
             <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 navbar-background-color border-end blue-border shadow-right">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-                    <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                        <span class="logo fs-5 d-none d-sm-inline"><img src="/static/logo.png" alt="logo"></span>
+                    <a href="/dashboard" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                        <span class="logo fs-5 d-none d-sm-inline"><i class="bi bi-box-fill"></i>&nbsp; PIERAB</span>
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                         <li class="nav-item">
@@ -167,8 +168,8 @@
                     <hr>
                     <div class="dropdown pb-4 fixed-bottom">
                         <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="/static/user.png" alt="hugenerd" width="30" height="30" class="rounded-circle">
-                            &nbsp;<span class="d-none d-sm-inline mx-1">
+                            &nbsp;&nbsp;&nbsp;&nbsp;<img src="/static/user.png" alt="hugenerd" width="30" height="30" class="rounded-circle">
+                           <span class="d-none d-sm-inline mx-1">
                                 Profil</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
