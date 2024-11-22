@@ -48,9 +48,9 @@ class RegisterForm(FlaskForm):
         existing_user_username = User.query.filter_by(
             username=username.data).first()
         if existing_user_username:
-            flash('Ce nom d\'utilisateur existe déja.')
+            flash('Ce nom d\'utilisateur existe déja.', 'danger')
             raise ValidationError(
-                'That username already exists. Please choose a different one.')
+                'Ce nom d\'utilisateur existe déja.')
             
 
 class LoginForm(FlaskForm):
