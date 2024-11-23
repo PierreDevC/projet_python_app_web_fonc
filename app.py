@@ -387,7 +387,34 @@ def filter_customers():
         flash(f"Error filtering customers: {str(e)}", 'error')
         return redirect(url_for('customer_list'))
 
+# filter order
+# en progression...
+@app.route('/filter_order', methods=['GET'])
+@login_required
+def filter_order():
+    search = request.args.get('search')
 
+    query = "SELECT * FROM order"
+    conditions = []
+    params = ()
+
+    if search:
+        conditions.append("(first_name LIKE ? OR last_name LIKE ?)")
+        params += (f"%{search}%", f"%{search}%")
+
+    if conditions:
+        query += " WHERE " + " AND ".join(conditions)
+
+    try:
+        with sqlite3.connect('inventory.db') as conn:
+            conn.row_factory = sqlite3.Row
+            cursor = conn.cursor()
+            cursor.execute(query, params)
+            rows = cursor.fetchall()
+            return render_template("order_list.html", rows=rows)
+    except sqlite3.Error as e:
+        flash(f"Error filtering order: {str(e)}", 'error')
+        return redirect(url_for('order_list'))
 
 
 # Order routes
