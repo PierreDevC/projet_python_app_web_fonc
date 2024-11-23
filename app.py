@@ -13,6 +13,7 @@ import sqlite3
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+from logging_actions import log_action
 
 app = Flask(__name__)
 
@@ -389,9 +390,9 @@ def filter_customers():
 
 # filter order
 # en progression...
-@app.route('/filter_order', methods=['GET'])
+@app.route('/filter_orders', methods=['GET'])
 @login_required
-def filter_order():
+def filter_orders():
     search = request.args.get('search')
 
     query = "SELECT * FROM order"

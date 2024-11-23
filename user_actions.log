@@ -1,0 +1,42 @@
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 132-642-568
+INFO:werkzeug:127.0.0.1 - - [23/Nov/2024 17:52:28] "GET /order_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Nov/2024 17:52:28] "[36mGET /static/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [23/Nov/2024 17:52:33] "GET /analytics HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Nov/2024 17:52:33] "[36mGET /static/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [23/Nov/2024 17:52:34] "GET /static/price_histogram.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Nov/2024 17:52:34] "GET /static/product_share.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Nov/2024 17:52:34] "GET /static/category_bar_chart.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Nov/2024 17:52:37] "GET /dashboard HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Nov/2024 17:52:37] "[36mGET /static/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [23/Nov/2024 17:52:37] "[36mGET /static/product-test.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [23/Nov/2024 17:52:37] "[36mGET /static/customer-test.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [23/Nov/2024 17:52:37] "[36mGET /static/order-test.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [23/Nov/2024 17:52:38] "GET /product_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Nov/2024 17:52:38] "[36mGET /static/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [23/Nov/2024 17:52:39] "GET /customer_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Nov/2024 17:52:39] "[36mGET /static/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [23/Nov/2024 17:52:40] "GET /order_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Nov/2024 17:52:40] "[36mGET /static/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug: * Detected change in 'C:\\Users\\pscyp\\OneDrive\\Documents\\Bureau\\python_projects\\projet_python_app_web_fonc\\logging_actions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 132-642-568
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 132-642-568
+INFO:werkzeug:127.0.0.1 - - [23/Nov/2024 17:53:15] "GET /order_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Nov/2024 17:53:15] "[36mGET /static/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [23/Nov/2024 17:53:16] "GET /product_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Nov/2024 17:53:16] "[36mGET /static/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [23/Nov/2024 17:53:19] "GET /product_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Nov/2024 17:53:19] "[36mGET /static/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [23/Nov/2024 17:53:21] "GET /filter_products?type=&category=&brand=&search= HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Nov/2024 17:53:22] "[36mGET /static/user.png HTTP/1.1[0m" 304 -
