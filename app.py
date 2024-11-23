@@ -501,7 +501,7 @@ def generate_pie_chart():
     plt.axis('equal')
     plt.title('Product Share by Brand')
 
-    plt.savefig('static/product_share.png', transparent=True)
+    plt.savefig('static/product_share.png', transparent=False)
     plt.close()
 
 def generate_category_bar_chart():
@@ -519,7 +519,7 @@ def generate_category_bar_chart():
     plt.ylabel('Number of Products')
     plt.title('Top 5 Categories by Number of Products')
 
-    plt.savefig('static/category_bar_chart.png', transparent=True)
+    plt.savefig('static/category_bar_chart.png', transparent=False)
     plt.close()
 
 def generate_price_histogram():
@@ -536,7 +536,7 @@ def generate_price_histogram():
     plt.ylabel('Frequency')
     plt.title('Distribution of Product Prices')
 
-    plt.savefig('static/price_histogram.png', transparent=True)
+    plt.savefig('static/price_histogram.png', transparent=False)
     plt.close()
 
 @app.route('/analytics')
