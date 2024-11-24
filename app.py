@@ -7,13 +7,14 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt
-from models import Products
-from models import Customers
 import sqlite3
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from logging_actions import log_action
+import pandas as pd
+from models import Products
+from models import Customers
 
 app = Flask(__name__)
 
