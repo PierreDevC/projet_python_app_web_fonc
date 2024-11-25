@@ -3,34 +3,37 @@
 {% block title %}Orders{% endblock %}
 
 {% block content %}
-
 <script>
-
 function toggleDeleteOrderButton() {
-        const checkboxes = document.querySelectorAll('input[name="order_ids"]:checked');
-        const deleteBtn = document.getElementById('deleteBtn');
-        
-        if (checkboxes.length > 0) {
-            deleteBtn.style.display = 'inline-block';
-        } else {
-            deleteBtn.style.display = 'none';
-        }
+    const checkboxes = document.querySelectorAll('input[name="order_ids"]:checked');
+    const deleteBtn = document.getElementById('deleteBtn');
+    
+    if (checkboxes.length > 0) {
+        deleteBtn.style.display = 'inline-block';
+    } else {
+        deleteBtn.style.display = 'none';
     }
+}
 
-    function selectAllCheckboxesOrders() {
-        var selectAllCheckbox = document.getElementById('selectAll');
-        var checkboxes = document.getElementsByName('order_ids');
-
-        if (selectAllCheckbox.checked) {
-            for (var i = 0; i < checkboxes.length; i++) {
-                checkboxes[i].checked = true;
-            }
-        } else {
-            for (var i = 0; i < checkboxes.length; i++) {
-                checkboxes[i].checked = false;
-            }
-        }
+function selectAllCheckboxesOrders() {
+    var selectAllCheckbox = document.getElementById('selectAll');
+    var checkboxes = document.getElementsByName('order_ids');
+    
+    for (var i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = selectAllCheckbox.checked;
     }
+}
+
+function updateQuantityMax() {
+    const productSelect = document.getElementById('product_id');
+    const quantityInput = document.getElementById('quantity');
+    const selectedOption = productSelect.options[productSelect.selectedIndex];
+    const maxStock = selectedOption.getAttribute('data-stock');
+    
+    quantityInput.max = maxStock;
+    quantityInput.value = Math.min(quantityInput.value, maxStock);
+    document.getElementById('available_stock').textContent = maxStock;
+}
 </script>
 
 <h2 class="text-white">Commandes</h2>
@@ -47,9 +50,9 @@ function toggleDeleteOrderButton() {
 <div class="collapse" id="filterOrders">
     <form class="form-inline" action="/filter_orders" method="get"><br>
         <input class="form-control w-50 mr-sm-2" type="search" name="search" placeholder="Rechercher un client" aria-label="Search"><br>
-        <a href="/order_list" class="btn btn-danger">Annuler la recherche</a>
+        <a href="/order_list" class="btn btn-secondary">Annuler la recherche</a>
         <button class="btn btn-primary" type="submit">Rechercher</button>
-      </form>
+    </form>
 </div>
 
 <table id="datatable" class="table table-striped table-hover">
@@ -70,7 +73,11 @@ function toggleDeleteOrderButton() {
             <td>{{ order.name }}</td>
             <td>{{ order.quantity }}</td>
             <td>
-                <button type="button" class="btn btn-danger btn-sm" onclick="deleteOrder(`{{ order.id }}`)">Delete</button>
+                <form action="{{ url_for('delete_order', order_id=order.id) }}" method="POST" style="display: inline;">
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette commande?')">
+                        <i class="bi bi-trash-fill"></i>
+                    </button>
+                </form>
             </td>
         </tr>
         {% endfor %}
@@ -88,16 +95,28 @@ function toggleDeleteOrderButton() {
             <div class="modal-body">
                 <form action="{{ url_for('add_order') }}" method="POST">
                     <div class="mb-3">
-                        <label for="customer_id" class="form-label">ID du client</label>
-                        <input type="text" class="form-control" name="customer_id" placeholder="Entrez l'ID du client">
+                        <label for="customer_id" class="form-label">Client</label>
+                        <select class="form-select" name="customer_id" required>
+                            <option value="">Sélectionnez un client</option>
+                            {% for customer in customers %}
+                            <option value="{{ customer.id }}">{{ customer.first_name }} {{ customer.last_name }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                     <div class="mb-3">
-                        <label for="product_id" class="form-label">ID du produit</label>
-                        <input type="text" class="form-control" name="product_id" placeholder="Entrez l'ID du produit">
+                        <label for="product_id" class="form-label">Produit</label>
+                        <select class="form-select" name="product_id" id="product_id" onchange="updateQuantityMax()" required>
+                            <option value="">Sélectionnez un produit</option>
+                            {% for product in products %}
+                            <option value="{{ product.id }}" data-stock="{{ product.stock }}">
+                                {{ product.name }} (Stock: {{ product.stock }})
+                            </option>
+                            {% endfor %}
+                        </select>
                     </div>
                     <div class="mb-3">
-                        <label for="quantity" class="form-label">Quantité</label>
-                        <input type="text" class="form-control" name="quantity" placeholder="Entrez la quantité">
+                        <label for="quantity" class="form-label">Quantité (Stock disponible: <span id="available_stock">0</span>)</label>
+                        <input type="number" class="form-control" id="quantity" name="quantity" min="1" value="1" required>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
@@ -108,24 +127,6 @@ function toggleDeleteOrderButton() {
         </div>
     </div>
 </div>
+
 <a href="/dashboard" class="buttons">Retourner au tableau de bord</a>
-
-<script>
-    /*
-    function deleteOrder(orderId) {
-        if (confirm('Are you sure you want to delete this order?')) {
-            fetch(`/delete_order/${orderId}`, {
-                method: 'POST',
-            }).then(response => {
-                if (response.ok) {
-                    location.reload();
-                } else {
-                    alert('Error deleting order');
-                }
-            });
-        }
-    }
-    */
-</script>
-
 {% endblock %}

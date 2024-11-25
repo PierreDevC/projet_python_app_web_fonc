@@ -51,18 +51,16 @@
 <h2 class="text-white">Produits</h2>
 <p class="text-white">Gérez vos produits avec efficacité ! Notre système d'inventaire vous permet de stocker, de suivre et de gérer vos produits de manière centralisée. <br>
     Ajoutez, modifiez ou supprimez des produits, gérez vos stocks et vos prix, et suivez vos ventes en temps réel.
-</p>k
+</p>
 
 
 <button type="button" class="buttons" data-bs-toggle="modal" data-bs-target="#exampleModal">
     <i class="bi bi-plus-circle-fill"></i> &nbsp;Ajouter un nouveau produit 
-</button>
-
-  <p>
+</button><br>
     <button class="buttons" type="button" data-bs-toggle="collapse" data-bs-target="#filterProducts" aria-expanded="false" aria-controls="collapseExample">
         <i class="bi bi-search"></i> &nbsp;Filtrer et rechercher  
     </button>
-  </p>
+
   <div class="collapse bg-dark" id="filterProducts">
     <div class="card card-body">
         <form action="/filter_products" method="get">
@@ -102,7 +100,7 @@
                 <label for="search" class="form-label">Rechercher</label>
                 <input type="text" class="form-control" name="search" id="search" placeholder="Rechercher le nom du produit">
             </div>
-            <a href="/product_list" class="btn btn-danger">Annuler les filtres</a>
+            <a href="/product_list" class="btn btn-secondary">Annuler les filtres</a>
             <button type="submit" class="btn btn-primary">Appliquer le filtre</button>
         </form>
     </div>
@@ -163,24 +161,24 @@
     <button type="submit" class="btn btn-danger delete-btn" id="deleteBtn" style="display: none;">Effacer les produits sélectionnés <i class="bi bi-trash-fill"></i></button>
 </form>
 
-<a href="/" class="buttons">Aller au tableau de bord</a>
+<a href="/" class="buttons">Retourner au tableau de bord</a>
 
 <!-- Add Product Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add new product</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Ajouter un nouveau produit</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form action="{{ url_for('add_product')}}" method="POST">
                     <div class="mb-3">
-                        <label for="ProductName" class="form-label">Product Name</label>
+                        <label for="ProductName" class="form-label">Nom du produit</label>
                         <input type="text" class="form-control" name="product_name" placeholder="Enter product name" required>
                     </div>
                     <fieldset class="row mb-3">
-                        <legend class="col-form-label col-sm-2 pt-0">Product Category</legend>
+                        <legend class="col-form-label col-sm-2 pt-0">Catégorie du produit</legend>
                         <div class="col-sm-10">
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="product_category" value="Productivity" required>
@@ -197,7 +195,7 @@
                         </div>
                     </fieldset>
                     <fieldset class="row mb-3">
-                        <legend class="col-form-label col-sm-2 pt-0">Product Type</legend>
+                        <legend class="col-form-label col-sm-2 pt-0">Type du produit</legend>
                         <div class="col-sm-10">
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="product_type" value="Laptop" required>
@@ -214,7 +212,7 @@
                         </div>
                     </fieldset>
                     <div class="mb-3">
-                        <label for="ProductBrand" class="form-label">Product Brand</label>
+                        <label for="ProductBrand" class="form-label">Marque du produit</label>
                         <select class="form-select" name="product_brand" required>
                             <option value="Acer">Acer</option>
                             <option value="Apple">Apple</option>
@@ -229,12 +227,12 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="ProductPrice" class="form-label">Product Price</label>
-                        <input type="number" name="product_price" min="0" max="10000" step="0.01" class="form-control" placeholder="Enter product price" required>
+                        <label for="ProductPrice" class="form-label">Prix du produit</label>
+                        <input type="number" name="product_price" min="0" max="10000" step="0.01" class="form-control" placeholder="Entrez le prix du produit" required>
                     </div>
                     <div class="mb-3">
-                        <label for="ProductStock" class="form-label">Product Stock</label>
-                        <input type="number" name="product_stock" class="form-control" placeholder="Enter product stock" required>
+                        <label for="ProductStock" class="form-label">Quantité du produit</label>
+                        <input type="number" name="product_stock" class="form-control" placeholder="Entrez la quantité" required>
                     </div>
                     <div class="form-group">
                         <label for="ProductDescription">Description</label>
@@ -242,7 +240,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Add product</button>
+                        <button type="submit" class="btn btn-primary">Ajouter produit</button>
                     </div>
                 </form>
             </div>

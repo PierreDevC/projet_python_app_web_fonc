@@ -388,36 +388,7 @@ def filter_customers():
     except sqlite3.Error as e:
         flash(f"Error filtering customers: {str(e)}", 'error')
         return redirect(url_for('customer_list'))
-
-# filter order
-# en progression...
-@app.route('/filter_orders', methods=['GET'])
-@login_required
-def filter_orders():
-    search = request.args.get('search')
-
-    query = "SELECT * FROM order"
-    conditions = []
-    params = ()
-
-    if search:
-        conditions.append("(first_name LIKE ? OR last_name LIKE ?)")
-        params += (f"%{search}%", f"%{search}%")
-
-    if conditions:
-        query += " WHERE " + " AND ".join(conditions)
-
-    try:
-        with sqlite3.connect('inventory.db') as conn:
-            conn.row_factory = sqlite3.Row
-            cursor = conn.cursor()
-            cursor.execute(query, params)
-            rows = cursor.fetchall()
-            return render_template("order_list.html", rows=rows)
-    except sqlite3.Error as e:
-        flash(f"Error filtering order: {str(e)}", 'error')
-        return redirect(url_for('order_list'))
-
+    
 
 # Order routes
 @app.route('/order_list')
@@ -426,14 +397,26 @@ def order_list():
     with sqlite3.connect('inventory.db') as conn:
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
-        cursor.execute('''SELECT o.id, o.customer_id, o.product_id, o.quantity, 
-                          c.first_name, c.last_name, 
-                          p.name, p.stock
-                          FROM orders o 
-                          JOIN customers c ON o.customer_id = c.id 
-                          JOIN products p ON o.product_id = p.id''')
+        # Get orders with customer and product details
+        cursor.execute('''
+            SELECT o.id, o.customer_id, o.product_id, o.quantity, 
+                   c.first_name, c.last_name, 
+                   p.name, p.stock
+            FROM orders o 
+            JOIN customers c ON o.customer_id = c.id 
+            JOIN products p ON o.product_id = p.id
+        ''')
         orders = cursor.fetchall()
-        return render_template("order_list.html", orders=orders)
+        
+        # Get all active customers for dropdown
+        cursor.execute('SELECT * FROM customers')
+        customers = cursor.fetchall()
+        
+        # Get all products with stock > 0 for dropdown
+        cursor.execute('SELECT * FROM products WHERE stock > 0')
+        products = cursor.fetchall()
+        
+        return render_template("order_list.html", orders=orders, customers=customers, products=products)
     
 @app.route('/add_order', methods=['POST'])
 @login_required
@@ -445,47 +428,87 @@ def add_order():
 
         with sqlite3.connect('inventory.db') as conn:
             cursor = conn.cursor()
+            
+            # Check current stock
             cursor.execute('SELECT stock FROM products WHERE id=?', (product_id,))
-            product_stock = cursor.fetchone()[0]
-            if product_stock < quantity:
-                flash('Pas assez de stock disponible', 'error')
+            current_stock = cursor.fetchone()[0]
+            
+            if current_stock < quantity:
+                flash('Stock insuffisant', 'error')
                 return redirect(url_for('order_list'))
-
-            cursor.execute('INSERT INTO orders (customer_id, product_id, quantity) VALUES (?, ?, ?)', (customer_id, product_id, quantity))
-            cursor.execute('UPDATE products SET stock=stock-? WHERE id=?', (quantity, product_id))
+            
+            # Add the order
+            cursor.execute('INSERT INTO orders (customer_id, product_id, quantity) VALUES (?, ?, ?)',
+                         (customer_id, product_id, quantity))
+            
+            # Update product stock
+            new_stock = current_stock - quantity
+            if new_stock == 0:
+                # Delete product if no stock left
+                cursor.execute('DELETE FROM products WHERE id=?', (product_id,))
+            else:
+                # Update stock
+                cursor.execute('UPDATE products SET stock=? WHERE id=?', (new_stock, product_id))
+            
             conn.commit()
-
             flash('Commande ajoutée avec succès', 'success')
+            
     except Exception as e:
-        flash(f'Error adding order: {str(e)}', 'error')
-
+        flash(f'Erreur lors de l\'ajout de la commande: {str(e)}', 'error')
+        
     return redirect(url_for('order_list'))
 
 
 @app.route('/delete_order/<int:order_id>', methods=['POST'])
 @login_required
 def delete_order(order_id):
-    if request.method == 'POST':
-        try:
-            with sqlite3.connect('inventory.db') as conn:
-                cursor = conn.cursor()
-                cursor.execute('SELECT product_id, quantity FROM orders WHERE id=?', (order_id,))
-                order_data = cursor.fetchone()
-                if order_data is None:
-                    flash('La commande n\'a pas été trouvée', 'success')
-                else:
-                    product_id, quantity = order_data
-                    cursor.execute('UPDATE products SET stock=stock+? WHERE id=?', (quantity, product_id))
-                    cursor.execute('DELETE FROM orders WHERE id=?', (order_id,))
-                    conn.commit()
-                    flash('Commande supprimée avec succès', 'success')
+    try:
+        with sqlite3.connect('inventory.db') as conn:
+            cursor = conn.cursor()
+            
+            # Get the order details before deletion
+            cursor.execute('SELECT product_id, quantity FROM orders WHERE id = ?', (order_id,))
+            order = cursor.fetchone()
+            
+            if order:
+                product_id, quantity = order
+                cursor.execute('UPDATE products SET stock = stock + ? WHERE id = ?', (quantity, product_id))
+                cursor.execute('DELETE FROM orders WHERE id = ?', (order_id,))
+                
+                conn.commit()
+                flash('Commande supprimée avec succès', 'success')
+            else:
+                flash('Commande non trouvée', 'error') 
+    except Exception as e:
+        flash(f'Erreur lors de la suppression de la commande: {str(e)}', 'error')
+    return redirect(url_for('order_list'))
 
-            return redirect(url_for('order_list'))
+@app.route('/filter_orders', methods=['GET'])
+@login_required
+def filter_orders():
+    search = request.args.get('search')
 
-        except Exception as e:
-            flash(f'Erreur lors de la suppression de la commande: {str(e)}')
-            return redirect(url_for('order_list'))
+    query = "SELECT o.id, o.customer_id, o.product_id, o.quantity, c.first_name, c.last_name, p.name, p.stock FROM orders o JOIN customers c ON o.customer_id = c.id JOIN products p ON o.product_id = p.id"
+    conditions = []
+    params = ()
 
+    if search:
+        conditions.append("(c.first_name LIKE ? OR c.last_name LIKE ?)")
+        params += (f"%{search}%", f"%{search}%")
+
+    if conditions:
+        query += " WHERE " + " AND ".join(conditions)
+
+    try:
+        with sqlite3.connect('inventory.db') as conn:
+            conn.row_factory = sqlite3.Row
+            cursor = conn.cursor()
+            cursor.execute(query, params)
+            orders = cursor.fetchall()
+            return render_template("order_list.html", orders=orders)
+    except sqlite3.Error as e:
+        flash(f"Erreur de filtrage de commandes: {str(e)}", 'error')
+        return redirect(url_for('order_list'))
 
 # Analytics routes
 def generate_pie_chart():
