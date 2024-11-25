@@ -3,38 +3,6 @@
 {% block title %}Orders{% endblock %}
 
 {% block content %}
-<script>
-function toggleDeleteOrderButton() {
-    const checkboxes = document.querySelectorAll('input[name="order_ids"]:checked');
-    const deleteBtn = document.getElementById('deleteBtn');
-    
-    if (checkboxes.length > 0) {
-        deleteBtn.style.display = 'inline-block';
-    } else {
-        deleteBtn.style.display = 'none';
-    }
-}
-
-function selectAllCheckboxesOrders() {
-    var selectAllCheckbox = document.getElementById('selectAll');
-    var checkboxes = document.getElementsByName('order_ids');
-    
-    for (var i = 0; i < checkboxes.length; i++) {
-        checkboxes[i].checked = selectAllCheckbox.checked;
-    }
-}
-
-function updateQuantityMax() {
-    const productSelect = document.getElementById('product_id');
-    const quantityInput = document.getElementById('quantity');
-    const selectedOption = productSelect.options[productSelect.selectedIndex];
-    const maxStock = selectedOption.getAttribute('data-stock');
-    
-    quantityInput.max = maxStock;
-    quantityInput.value = Math.min(quantityInput.value, maxStock);
-    document.getElementById('available_stock').textContent = maxStock;
-}
-</script>
 
 <h2 class="text-white">Commandes</h2>
 <br>
@@ -49,7 +17,7 @@ function updateQuantityMax() {
 
 <div class="collapse" id="filterOrders">
     <form class="form-inline" action="/filter_orders" method="get"><br>
-        <input class="form-control w-50 mr-sm-2" type="search" name="search" placeholder="Rechercher un client" aria-label="Search"><br>
+        <input class="form-control w-50 mr-sm-2" type="search" name="search" placeholder="Rechercher avec le nom du client" aria-label="Search"><br>
         <a href="/order_list" class="btn btn-secondary">Annuler la recherche</a>
         <button class="btn btn-primary" type="submit">Rechercher</button>
     </form>

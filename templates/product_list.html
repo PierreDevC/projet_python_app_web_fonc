@@ -5,47 +5,7 @@
 {% block content %}
 
 <script>
-    function toggleDeleteProductButton() {
-        const checkboxes = document.querySelectorAll('input[name="product_ids"]:checked');
-        const deleteBtn = document.getElementById('deleteBtn');
-        
-        if (checkboxes.length > 0) {
-            deleteBtn.style.display = 'inline-block';
-        } else {
-            deleteBtn.style.display = 'none';
-        }
-    }
 
-    function selectAllCheckboxesProducts() {
-        var selectAllCheckbox = document.getElementById('selectAll');
-        var checkboxes = document.getElementsByName('product_ids');
-
-        if (selectAllCheckbox.checked) {
-            for (var i = 0; i < checkboxes.length; i++) {
-                checkboxes[i].checked = true;
-            }
-        } else {
-            for (var i = 0; i < checkboxes.length; i++) {
-                checkboxes[i].checked = false;
-            }
-        }
-    }
-
-    function populateModifyModal(button) {
-    const data = button.dataset;
-
-    document.getElementById('modify_product_id').value = data.id;
-    document.getElementById('modify_product_name').value = data.name;
-    document.querySelector(`input[name="modify_product_type"][value="${data.type}"]`).checked = true;
-    document.querySelector(`input[name="modify_product_category"][value="${data.category}"]`).checked = true;
-    document.querySelector('select[name="modify_product_brand"]').value = data.brand;
-    document.getElementById('modify_product_price').value = data.price;
-    document.getElementById('modify_product_stock').value = data.stock;
-    document.getElementById('modify_product_desc').value = data.description;
-    }
-
-    const button = document.querySelector('.buttons');
-    const collapse = document.querySelector('#collapseExample');
 </script>
 
 <h2 class="text-white">Produits</h2>

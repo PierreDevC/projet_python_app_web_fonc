@@ -1,4 +1,3 @@
-
 import os
 from flask import Flask,render_template, request, url_for, redirect, send_file, flash
 from flask_sqlalchemy import SQLAlchemy
@@ -272,6 +271,7 @@ def customer_list():
         return render_template("customer_list.html", rows=rows, user=current_user)
 
 @app.route('/add_customer', methods=['POST', 'GET'])
+@login_required
 def add_customer():
     if request.method == 'POST':
         try:

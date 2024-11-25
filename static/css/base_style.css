@@ -1,0 +1,123 @@
+/* General body styling */
+body {
+    font-family: 'Helvetica', sans-serif;
+    background-color: #080F25;
+}
+.container {
+    padding-top: 20px;
+}
+/* Styling for the table */
+#datatable {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 40px 10px 30px rgba(0,0,0,0.15);
+    border: 1px solid #273859;
+}
+#datatable thead {
+    background-color: #273859;
+    color: white;
+}
+#datatable thead th {
+    padding: 12px;
+    text-align: left;
+    font-weight: bold;
+    color: white;
+    border-bottom: 1px solid #42558a;
+}
+#datatable tbody td {
+    padding: 12px;
+    border: none;
+    vertical-align: middle;
+    color: white;
+}
+/* Alternance des couleurs de tables */
+/* old color #f7f7f7;*/
+#datatable tbody tr:nth-child(even) {
+    background-color: #273859
+}
+/* old color #ffffff; */
+#datatable tbody tr:nth-child(odd) {
+    background-color: #142240
+}
+#datatable tbody tr:hover {
+    opacity: 1.5;
+    transition: background-color 0.2s ease;
+}
+#datatable thead th:first-child {
+    border-top-left-radius: 8px;
+}
+#datatable thead th:last-child {
+    border-top-right-radius: 8px;
+}
+#datatable tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 8px;
+}
+#datatable tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 8px;
+}
+/* Button styling */
+a.button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: #0D1E47;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+a.button:hover {
+    background-color: #6a2a6e;
+}
+.navbar-background-color {
+    background-color: #080F25;
+}
+.dashboard-background-color {
+    background-color: #081028;
+}
+.table-background-color {
+    background-color: #0b1739;
+}
+.blue-border {
+border-color: #0b1739 !important;
+}
+.shadow-right {
+box-shadow: 20px 15px 20px rgba(0,0,0,0.15);
+}
+/* boutons pour les pages */
+.buttons {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: #6c72ff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    border:none;
+    transition: 0.3s;
+}
+.buttons:hover {
+    background-color: #273E72;
+    color: white;
+}
+.logo {
+    font-size:30px; 
+    padding: 20px;
+}
+.lightblue {
+color: #8695C4
+}
+.table-custom {
+color: #101935;
+background-color: #101935;
+}
+
+input.table-checkbox {
+width: 15px;
+height: 15px;
+}
+
+

@@ -7,48 +7,6 @@
 <h2 class="text-white">Clients</h2>
 <br>
 
-<script>
-    function toggleDeleteButton() {
-        // Boutons checked
-        const checkboxes = document.querySelectorAll('input[name="customer_ids"]:checked');
-        // Bouton delete
-        const deleteBtn = document.getElementById('deleteBtn');
-        // Si au moins un bouton est checked, montrer le bouton
-        if (checkboxes.length > 0) {
-            deleteBtn.style.display = 'inline-block'; // Montrer bouton
-        } else {
-            deleteBtn.style.display = 'none'; // Cacher bouton
-        }
-    }
-
-    function selectAllCheckboxesCustomers() {
-        var selectAllCheckbox = document.getElementById('selectAll');
-        var checkboxes = document.getElementsByName('customer_ids');
-
-        if (selectAllCheckbox.checked) {
-            for (var i = 0; i < checkboxes.length; i++) {
-                checkboxes[i].checked = true;
-            }
-        } else {
-            for (var i = 0; i < checkboxes.length; i++) {
-                checkboxes[i].checked = false;
-            }
-        }
-    }
-
-    function populateModifyCustomer(button) {
-        const data = button.dataset;
-        document.getElementById('modify_customer_id').value = data.id;
-        document.getElementById('modify_customer_first_name').value = data.firstName;
-        document.getElementById('modify_customer_last_name').value = data.lastName;
-        document.getElementById('modify_customer_email').value = data.email;
-    }
-
-
-    const button = document.querySelector('.buttons');
-    const collapse = document.querySelector('#collapseExample');
-</script>
-
 <button type="button" class="buttons" data-bs-toggle="modal" data-bs-target="#exampleModal">
     <i class="bi bi-person-plus-fill"></i> &nbsp;Ajouter un nouveau client
   </button>
