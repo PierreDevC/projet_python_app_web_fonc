@@ -46,7 +46,7 @@ def create_tables():
     
     conn.commit()
     conn.close()
-    print("Tables created successfully (if they didn't already exist).")
+    print("Tables créées avec succès (si ils n'existent pas déja).")
 
 # To allow execution as a script
 if __name__ == "__main__":

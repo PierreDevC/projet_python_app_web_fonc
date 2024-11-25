@@ -10,14 +10,15 @@ import sqlite3
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-from logging_actions import log_action
+import logging
+from functools import wraps
 import pandas as pd
 from models import Products
 from models import Customers
 
 app = Flask(__name__)
 
-# Authentication logic
+# Logique d'autentification
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SECRET_KEY'] = 'thisisasecretkey'
@@ -570,6 +571,18 @@ def product_share():
     generate_category_bar_chart()
     generate_price_histogram()
     return render_template('analytics.html')
+
+
+logging.basicConfig(filename='user_actions.log', level=logging.INFO)
+
+def log_action(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        user_id = request.cookies.get('user_id')
+        action = func.__name__
+        logging.info(f"User ID: {user_id}, Action: {action}")
+        return func(*args, **kwargs)
+    return wrapper
 
 if __name__ == '__main__':
     app.run(debug=True)
