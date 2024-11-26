@@ -1,3 +1,11 @@
+# Fichier : app.py
+# Projet : Application Web Fonctionelle
+# Auteurs : Pierre-Sylvestre Cypré, Aboubacar Sidiki Doumbouya
+# Date : 9 Novembre 2024
+# Objectif et description : Utilisation des classes créees dans models.py pour créer l'instance de classes et utiliser leurs propriétés et méthodes
+# Utiliser 
+# Le décorateur @loginrequired s'applique à pratiquement toutes les routes et permettra à l'application de savoir si l'utilisateur est bel et bien connecté
+
 import os
 from flask import Flask,render_template, request, url_for, redirect, send_file, flash
 from flask_sqlalchemy import SQLAlchemy
@@ -13,16 +21,19 @@ import matplotlib.pyplot as plt
 import logging
 from functools import wraps
 import pandas as pd
-from models import Products
-from models import Customers
+from models import Products, Customers, Orders
+import database_script
 
 app = Flask(__name__)
 
-# Logique d'autentification
+# chemin absolu du répertoire
 basedir = os.path.abspath(os.path.dirname(__file__))
+# configuration de la base de données sql pour les utilisateurs
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+# clé secrète pour la base de données
 app.config['SECRET_KEY'] = 'thisisasecretkey'
 
+# intialize la db pour intéragic avec la base de données et également initialize Bcrypt
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 
@@ -30,6 +41,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+# fonction utilisant un décorateur pour prendre un objet user de la base de données avec leur Id pour utiliser dans Flask-Login
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -39,6 +51,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(20), nullable=False, unique=True)
     password = db.Column(db.String(80), nullable=False)
 
+# formulaire pour créer un nouveau compte
 class RegisterForm(FlaskForm):
     username = StringField(validators=[
                            InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
@@ -54,7 +67,7 @@ class RegisterForm(FlaskForm):
             raise ValidationError(
                 'Ce nom d\'utilisateur existe déja.')
             
-
+# formulaire pour se connecter
 class LoginForm(FlaskForm):
     username = StringField(validators=[
                            InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
@@ -62,10 +75,12 @@ class LoginForm(FlaskForm):
                              InputRequired(), Length(min=8, max=20)], render_kw={"placeholder": "Password"})
     submit = SubmitField('Se connecter')
 
+# page initale (la première page que le visiteur/utilisateur verra)
 @app.route('/')
 def home():
     return render_template('home.html')
 
+# route pour valider le formulaire de connexion, voir si le mot de passe hash est correspondant à celui de l'utilisateur (encrypter), et authentifier l'utilisateur 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -83,6 +98,7 @@ def login():
             return redirect(url_for('login'))
     return render_template('login.html', form=form)
 
+# route pour la page principale après avoir été loggé
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
@@ -93,12 +109,14 @@ def dashboard():
     conn.close()
     return render_template('dashboard.html', products=products, customers=customers, user=current_user)
 
+# route pour se déconnecter
 @app.route('/logout', methods=['GET', 'POST'])
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('login'))
 
+# route pour créer un nouvel utilisateur, hasher son mot de passe dans la base de données
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
@@ -110,117 +128,71 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
 
-# Product Routes
-@app.route('/add_product',methods=['POST', 'GET'])
+# route qui donne la liste de tous les produits
+@app.route('/product_list')
+@login_required
+def product_list():
+    rows = Products.get_all()
+    return render_template("product_list.html", rows=rows, user=current_user)
+
+# route pour ajouter un produit en utilisant les valeurs du formulaire bootstrap
+@app.route('/add_product', methods=['POST', 'GET'])
 def add_product():
     if request.method == 'POST':
         try:
-            name = request.form['product_name']
-            type = request.form.get('product_type')
-            category = request.form['product_category']
-            brand = request.form['product_brand']
-            price = request.form['product_price']
-            stock = request.form['product_stock']
-            desc = request.form['product_desc'] 
-            
-            new_product = Products(name, type, category, brand, price, stock, desc)
-
-            with sqlite3.connect('inventory.db') as conn:
-                cursor = conn.cursor()
-                cursor.execute('''
-                CREATE TABLE IF NOT EXISTS products (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT NOT NULL,
-                type TEXT NOT NULL,
-                category TEXT NOT NULL,
-                brand TEXT NOT NULL,
-                price REAL NOT NULL,
-                stock INTEGER,
-                description TEXT,
-                date_added TEXT NOT NULL DEFAULT CURRENT_DATE
-                )
-                ''')
-
-                sql = "INSERT INTO products (name, type, category, brand, price, stock, description) VALUES (?, ?, ?, ?, ?, ?, ?)"
-                args = (new_product.name, new_product.type, new_product.category, new_product.brand, new_product.price, new_product.stock, new_product.description)
-                cursor = conn.execute(sql, args)
-                conn.commit()
-                flash(f'Le produit a été ajouté avec succès!', 'success')
-
+            new_product = Products(
+                name=request.form['product_name'],
+                type=request.form.get('product_type'),
+                category=request.form['product_category'],
+                brand=request.form['product_brand'],
+                price=float(request.form['product_price']),
+                stock=int(request.form['product_stock']),
+                description=request.form['product_desc']
+            )
+            new_product.save()
+            flash('Le produit a été ajouté avec succès!', 'success')
         except Exception as e:
-            conn.rollback()
             flash(f'Il y a eu une erreur lors de l\'ajout du produit : {e}', 'danger')
-        
-        finally:
-            conn.close()
-            return redirect(url_for('product_list', user=current_user))
+        return redirect(url_for('product_list'))
 
+# route pour mettre à jour un produit en utilisant les valeurs du formulaire bootstrap
 @app.route('/update_product', methods=['POST'])
 @login_required
 def update_product():
     if request.method == 'POST':
         try:
-            product_id = request.form['product_id']
-            name = request.form['product_name']
-            product_type = request.form['modify_product_type']
-            category = request.form['modify_product_category']
-            brand = request.form['modify_product_brand']
-            price = request.form['product_price']
-            stock = request.form['product_stock']
-            description = request.form['product_desc']
-            
-            with sqlite3.connect('inventory.db') as conn:
-                cursor = conn.cursor()
-                cursor.execute('''
-                    UPDATE products 
-                    SET name=?, type=?, category=?, brand=?, price=?, stock=?, description=?
-                    WHERE id=?
-                ''', (name, product_type, category, brand, price, stock, description, product_id))
-                conn.commit()
-                flash('Product successfully updated!', 'success')
+            product_data = {
+                'name': request.form['product_name'],
+                'type': request.form['modify_product_type'],
+                'category': request.form['modify_product_category'],
+                'brand': request.form['modify_product_brand'],
+                'price': float(request.form['product_price']),
+                'stock': int(request.form['product_stock']),
+                'description': request.form['product_desc']
+            }
+            Products.update(request.form['product_id'], product_data)
+            flash('Product successfully updated!', 'success')
         except Exception as e:
-            conn.rollback()
             flash(f'Error updating product: {str(e)}', 'danger')
-        finally:
-            return redirect(url_for('product_list', user=current_user))
+        return redirect(url_for('product_list'))
 
+# route pour supprimer un produit. prend le id sélectionné en checkbox, parcours la liste de product_ids et efface ceux qui sont sélectionnés
 @app.route('/delete_product', methods=['POST'])
 def delete_product():
     if request.method == 'POST':
         try:
             product_ids = request.form.getlist('product_ids')
-            
             if not product_ids:
-                flash('Pas de produit sélectionné à supprimer. Veuillez sélectionner au moins un produit', 'danger')
+                flash('Pas de produit sélectionné à supprimer.', 'danger')
             else:
-                with sqlite3.connect('inventory.db') as conn:
-                    cursor = conn.cursor()
-                    
-                    sql = "DELETE FROM products WHERE id IN ({})".format(','.join('?' for _ in product_ids))
-                    cursor.execute(sql, product_ids)
-                    conn.commit()
-                    
-                    flash(f'{len(product_ids)} produits supprimé(s) avec succès.', 'success')
-        
+                for product_id in product_ids:
+                    Products.delete(product_id)
+                flash(f'{len(product_ids)} produits supprimé(s) avec succès.', 'success')
         except Exception as e:
-            conn.rollback()
             flash(f'Erreur lors de la suppression du produit(s): {str(e)}', 'danger')
-        
-        finally:
-            conn.close()
-            return redirect(url_for('product_list'))
+        return redirect(url_for('product_list'))
 
-@app.route('/product_list')
-@login_required
-def product_list():
-    with sqlite3.connect('inventory.db') as conn:
-        conn.row_factory = sqlite3.Row
-        cursor = conn.cursor()
-        cursor.execute('''SELECT * from products''')
-        rows = cursor.fetchall()
-        return render_template("product_list.html",rows=rows, user=current_user)
-    
-
+# route pour filtrer les produits en prenant (si présent) les arguments sélectionnées dans le formulaire de filtrage et fait la requête sql dans la classe Produit
 @app.route('/filter_products', methods=['GET'])
 @login_required
 def filter_products():
@@ -228,351 +200,222 @@ def filter_products():
     category = request.args.get('category')
     brand = request.args.get('brand')
     search = request.args.get('search')
+    
+    rows = Products.filter_products(type, category, brand, search)
+    return render_template("product_list.html", rows=rows)
 
-    query = "SELECT * FROM products"
-
-    conditions = []
-    params = ()
-
-    if type:
-        conditions.append("type = ?")
-        params += (type,)
-
-    if category:
-        conditions.append("category = ?")
-        params += (category,)
-
-    if brand:
-        conditions.append("brand = ?")
-        params += (brand,)
-
-    if search:
-        conditions.append("name LIKE ?")
-        params += (f"%{search}%",)
-
-    if conditions:
-        query += " WHERE " + " AND ".join(conditions)
-
-    with sqlite3.connect('inventory.db') as conn:
-        conn.row_factory = sqlite3.Row
-        cursor = conn.cursor()
-        cursor.execute(query, params)
-        rows = cursor.fetchall()
-        return render_template("product_list.html", rows=rows)
-
-# Customers routes
+# génère la liste de tous les clients dans la table html de la page customer_list.html
 @app.route('/customer_list')
 @login_required
 def customer_list():
-    with sqlite3.connect('inventory.db') as conn:
-        conn.row_factory = sqlite3.Row
-        cursor = conn.cursor()
-        cursor.execute('''SELECT * from customers''')
-        rows = cursor.fetchall()
-        return render_template("customer_list.html", rows=rows, user=current_user)
+    rows = Customers.get_all()
+    return render_template("customer_list.html", rows=rows, user=current_user)
 
+# ajoute un client basé sur les informations entrées dans le modal bootstrap et le sauvegarde
 @app.route('/add_customer', methods=['POST', 'GET'])
 @login_required
 def add_customer():
     if request.method == 'POST':
         try:
-            first_name = request.form['first_name']
-            last_name = request.form['last_name']
-            email = request.form['email']
-
-            new_customer = Customers(first_name, last_name, email)
-
-            with sqlite3.connect('inventory.db') as conn:
-                cursor = conn.cursor()
-                cursor.execute('''
-                    CREATE TABLE IF NOT EXISTS customers (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        first_name TEXT NOT NULL,
-                        last_name TEXT NOT NULL,
-                        email TEXT NOT NULL,
-                        date_added TEXT NOT NULL DEFAULT CURRENT_DATE
-                    )
-                ''')
-
-                sql = "INSERT INTO customers (first_name, last_name, email, date_added) VALUES (?, ?, ?, CURRENT_DATE)"
-                args = (new_customer.first_name, new_customer.last_name, new_customer.email)
-                cursor.execute(sql, args)
-                conn.commit()
-                msg = "Customer successfully added"
-                flash(f'Le client a été ajouté avec succès!', 'success')
-
+            new_customer = Customers(
+                first_name=request.form['first_name'],
+                last_name=request.form['last_name'],
+                email=request.form['email']
+            )
+            new_customer.save()
+            flash('Le client a été ajouté avec succès!', 'success')
         except Exception as e:
-            conn.rollback()
             flash(f'Il y a eu une erreur lors de l\'ajout du client : {e}', 'danger')
+        return redirect(url_for('customer_list'))
 
-        finally:
-            conn.close()
-            return redirect(url_for('customer_list'))
-
-
+# met à jour les informations d'un client en utilisant les nouvelles informations entrées dans le modal bootstrap
 @app.route('/update_customer', methods=['POST'])
 @login_required
 def update_customer():
     if request.method == 'POST':
         try:
-            customer_id = request.form['id']
-            first_name = request.form['first_name']
-            last_name = request.form['last_name']
-            email = request.form['email']
-            
-            with sqlite3.connect('inventory.db') as conn:
-                cursor = conn.cursor()
-                cursor.execute('''
-                    UPDATE customers
-                    SET first_name=?, last_name=?, email=?
-                    WHERE id=?
-                ''', (first_name, last_name, email, customer_id))
-                conn.commit()
-                flash('Le client a été modifié avec succès!', 'success')
+            customer_data = {
+                'first_name': request.form['first_name'],
+                'last_name': request.form['last_name'],
+                'email': request.form['email']
+            }
+            Customers.update(request.form['id'], customer_data)
+            flash('Le client a été modifié avec succès!', 'success')
         except Exception as e:
-            conn.rollback()
             flash(f'Erreur lors de la modification du client: {str(e)}', 'danger')
-        finally:
-            return redirect(url_for('customer_list', user=current_user))
+        return redirect(url_for('customer_list'))
 
-
+# route pour supprimer un client. prend le id sélectionné en checkbox, parcours la liste de customer_ids et efface ceux qui sont sélectionnés
 @app.route('/delete_selected_customer', methods=['POST'])
 @login_required
 def delete_selected_customer():
     if request.method == 'POST':
         try:
-            customer_ids = request.form.getlist('customer_ids', type=int)
-
+            customer_ids = request.form.getlist('customer_ids')
             if not customer_ids:
-                flash('Pas de client sélectionné à effacer. Veuillez sélectionner au moins un client', 'danger')
+                flash('Pas de client sélectionné à effacer.', 'danger')
             else:
-                with sqlite3.connect('inventory.db') as conn:
-                    cursor = conn.cursor()
-                    sql = "DELETE FROM customers WHERE id IN (%s)" % ','.join('?' for _ in customer_ids)
-                    cursor.execute(sql, customer_ids)
-                    conn.commit()
-                    flash(f'{len(customer_ids)} clients supprimé(s) avec succès.', 'success')
-
-        except sqlite3.Error as e:
-            conn.rollback()
+                for customer_id in customer_ids:
+                    Customers.delete(customer_id)
+                flash(f'{len(customer_ids)} clients supprimé(s) avec succès.', 'success')
+        except Exception as e:
             flash(f'Erreur lors de la suppression du client(s): {str(e)}', 'danger')
+        return redirect(url_for('customer_list'))
 
-        finally:
-            conn.close()
-            return redirect(url_for('customer_list'))
-
-
-# en progression...
+# filtre les clients par leurs prénoms et noms, récupère le paramètre de recherche search dans l'URL, appelle la méthode filtrer_customers
 @app.route('/filter_customers', methods=['GET'])
 @login_required
 def filter_customers():
     search = request.args.get('search')
+    rows = Customers.filter_customers(search)
+    return render_template("customer_list.html", rows=rows)
 
-    query = "SELECT * FROM customers"
-    conditions = []
-    params = ()
-
-    if search:
-        conditions.append("(first_name LIKE ? OR last_name LIKE ?)")
-        params += (f"%{search}%", f"%{search}%")
-
-    if conditions:
-        query += " WHERE " + " AND ".join(conditions)
-
-    try:
-        with sqlite3.connect('inventory.db') as conn:
-            conn.row_factory = sqlite3.Row
-            cursor = conn.cursor()
-            cursor.execute(query, params)
-            rows = cursor.fetchall()
-            return render_template("customer_list.html", rows=rows)
-    except sqlite3.Error as e:
-        flash(f"Error filtering customers: {str(e)}", 'error')
-        return redirect(url_for('customer_list'))
-    
-
-# Order routes
+# montre toutes les commandes en cours
+# les produits et les customers seront affichés dans le modal lors de la sélection 
 @app.route('/order_list')
 @login_required
 def order_list():
-    with sqlite3.connect('inventory.db') as conn:
-        conn.row_factory = sqlite3.Row
-        cursor = conn.cursor()
-        # Get orders with customer and product details
-        cursor.execute('''
-            SELECT o.id, o.customer_id, o.product_id, o.quantity, 
-                   c.first_name, c.last_name, 
-                   p.name, p.stock
-            FROM orders o 
-            JOIN customers c ON o.customer_id = c.id 
-            JOIN products p ON o.product_id = p.id
-        ''')
-        orders = cursor.fetchall()
-        
-        # Get all active customers for dropdown
-        cursor.execute('SELECT * FROM customers')
-        customers = cursor.fetchall()
-        
-        # Get all products with stock > 0 for dropdown
-        cursor.execute('SELECT * FROM products WHERE stock > 0')
-        products = cursor.fetchall()
-        
-        return render_template("order_list.html", orders=orders, customers=customers, products=products)
-    
+    orders = Orders.get_all()
+    customers = Customers.get_all()
+    products = Products.filter_products()  # prendre tous les produits avec un stock > 0
+    return render_template("order_list.html", orders=orders, customers=customers, products=products)
+
+# ajoute une nouvelle commande en prenant le id du produit spécifié, la quantité, 
+# si la quantité du produit est en dessous de la quantité demandée, afficher un message d'erreur
+# sinon créer la commande avec le customer_id, le product_id et la quantité et sauvegarder grâce à la méthode de la classe orders
 @app.route('/add_order', methods=['POST'])
 @login_required
 def add_order():
     try:
-        customer_id = request.form['customer_id']
-        product_id = request.form['product_id']
+        product = Products.get_by_id(request.form['product_id'])
         quantity = int(request.form['quantity'])
-
-        with sqlite3.connect('inventory.db') as conn:
-            cursor = conn.cursor()
-            
-            # Check current stock
-            cursor.execute('SELECT stock FROM products WHERE id=?', (product_id,))
-            current_stock = cursor.fetchone()[0]
-            
-            if current_stock < quantity:
-                flash('Stock insuffisant', 'error')
-                return redirect(url_for('order_list'))
-            
-            # Add the order
-            cursor.execute('INSERT INTO orders (customer_id, product_id, quantity) VALUES (?, ?, ?)',
-                         (customer_id, product_id, quantity))
-            
-            # Update product stock
-            new_stock = current_stock - quantity
-            if new_stock == 0:
-                # Delete product if no stock left
-                cursor.execute('DELETE FROM products WHERE id=?', (product_id,))
-            else:
-                # Update stock
-                cursor.execute('UPDATE products SET stock=? WHERE id=?', (new_stock, product_id))
-            
-            conn.commit()
-            flash('Commande ajoutée avec succès', 'success')
-            
+        
+        if product['stock'] < quantity:
+            flash('Stock insuffisant', 'error')
+            return redirect(url_for('order_list'))
+        
+        new_order = Orders(
+            customer_id=request.form['customer_id'],
+            product_id=request.form['product_id'],
+            quantity=quantity
+        )
+        new_order.save()
+        
+        Products.update_stock(request.form['product_id'], -quantity)
+        flash('Commande ajoutée avec succès', 'success')
     except Exception as e:
         flash(f'Erreur lors de l\'ajout de la commande: {str(e)}', 'error')
-        
     return redirect(url_for('order_list'))
 
-
+# supprime la commande selon l'id fourni
 @app.route('/delete_order/<int:order_id>', methods=['POST'])
 @login_required
 def delete_order(order_id):
     try:
-        with sqlite3.connect('inventory.db') as conn:
-            cursor = conn.cursor()
-            
-            # Get the order details before deletion
-            cursor.execute('SELECT product_id, quantity FROM orders WHERE id = ?', (order_id,))
-            order = cursor.fetchone()
-            
-            if order:
-                product_id, quantity = order
-                cursor.execute('UPDATE products SET stock = stock + ? WHERE id = ?', (quantity, product_id))
-                cursor.execute('DELETE FROM orders WHERE id = ?', (order_id,))
-                
-                conn.commit()
-                flash('Commande supprimée avec succès', 'success')
-            else:
-                flash('Commande non trouvée', 'error') 
+        order = Orders.get_by_id(order_id)
+        if order:
+            product = Products.get_by_id(order['product_id'])
+            if product:
+                Products.update_stock(order['product_id'], order['quantity'])
+            Orders.delete(order_id)
+            flash('Commande supprimée avec succès', 'success')
+        else:
+            flash('Commande non trouvée', 'error')
     except Exception as e:
         flash(f'Erreur lors de la suppression de la commande: {str(e)}', 'error')
     return redirect(url_for('order_list'))
 
+# filtre les ordres selon la recherche (input) dans la barre de recherche du collapse Bootstrap
 @app.route('/filter_orders', methods=['GET'])
 @login_required
 def filter_orders():
     search = request.args.get('search')
+    orders = Orders.filter_orders(search)
+    return render_template("order_list.html", orders=orders)
 
-    query = "SELECT o.id, o.customer_id, o.product_id, o.quantity, c.first_name, c.last_name, p.name, p.stock FROM orders o JOIN customers c ON o.customer_id = c.id JOIN products p ON o.product_id = p.id"
-    conditions = []
-    params = ()
 
-    if search:
-        conditions.append("(c.first_name LIKE ? OR c.last_name LIKE ?)")
-        params += (f"%{search}%", f"%{search}%")
-
-    if conditions:
-        query += " WHERE " + " AND ".join(conditions)
-
-    try:
-        with sqlite3.connect('inventory.db') as conn:
-            conn.row_factory = sqlite3.Row
-            cursor = conn.cursor()
-            cursor.execute(query, params)
-            orders = cursor.fetchall()
-            return render_template("order_list.html", orders=orders)
-    except sqlite3.Error as e:
-        flash(f"Erreur de filtrage de commandes: {str(e)}", 'error')
-        return redirect(url_for('order_list'))
-
-# Analytics routes
+# Graphiques (Données analytiques)
 def generate_pie_chart():
+    # Connexion à la base de données SQLite 'inventory.db'
     conn = sqlite3.connect('inventory.db')
     cursor = conn.cursor()
 
+    # Exécution d'une requête SQL pour récupérer le nombre de produits par marque
+    # La requête regroupe les produits par marque, compte le nombre de produits pour chaque marque
     cursor.execute('SELECT brand, COUNT(*) FROM products GROUP BY brand')
     rows = cursor.fetchall()
 
-    brands = [row[0] for row in rows]
-    counts = [row[1] for row in rows]
+    # Extraction des marques et des comptes de produits à partir des résultats de la requête
+    brands = [row[0] for row in rows]  # marques
+    counts = [row[1] for row in rows]  # comptes de produits
 
+    # Création d'un graphique en camembert à l'aide de matplotlib
     plt.pie(counts, labels=brands, autopct='%1.1f%%')
     plt.axis('equal')
-    plt.title('Product Share by Brand')
+    plt.title('Part de marché des produits par marque')
 
+    # Sauvegarde du graphique dans un fichier nommé 'product_share.png' dans le répertoire 'static'
     plt.savefig('static/product_share.png', transparent=False)
     plt.close()
 
 def generate_category_bar_chart():
+    # Connexion à la base de données SQLite 'inventory.db'
     conn = sqlite3.connect('inventory.db')
     cursor = conn.cursor()
 
+    # Exécution d'une requête SQL pour récupérer les 5 catégories avec le plus de produits
+    # La requête regroupe les produits par catégorie, compte le nombre de produits dans chaque catégorie,
+    # et trie les résultats par ordre décroissant selon le nombre de produits
     cursor.execute('SELECT category, COUNT(*) FROM products GROUP BY category ORDER BY COUNT(*) DESC LIMIT 5')
     rows = cursor.fetchall()
 
-    categories = [row[0] for row in rows]
-    counts = [row[1] for row in rows]
+    # Extraction des noms de catégories et des comptes de produits à partir des résultats de la requête
+    categories = [row[0] for row in rows]  # noms de catégories
+    counts = [row[1] for row in rows]  # comptes de produits
 
+    # Création d'un graphique à barres à l'aide de matplotlib
     plt.bar(categories, counts)
-    plt.xlabel('Category')
-    plt.ylabel('Number of Products')
-    plt.title('Top 5 Categories by Number of Products')
+    plt.xlabel('Catégorie')  # étiquette de l'axe des x
+    plt.ylabel('Nombre de produits')  # étiquette de l'axe des y
+    plt.title('Top 5 catégories par nombre de produits')  # titre du graphique
 
+    # Sauvegarde du graphique dans un fichier nommé 'category_bar_chart.png' dans le répertoire 'static'
     plt.savefig('static/category_bar_chart.png', transparent=False)
-    plt.close()
+    plt.close()  # fermeture du graphique pour libérer les ressources
 
-def generate_price_histogram():
+def generate_order_quantity_histogram():
     conn = sqlite3.connect('inventory.db')
     cursor = conn.cursor()
 
-    cursor.execute('SELECT price FROM products')
+    # Prendre les valeurs de quantité de la table orders
+    cursor.execute('SELECT quantity FROM orders')
     rows = cursor.fetchall()
 
-    prices = [row[0] for row in rows]
+    # Extraire les quantité dans une liste
+    quantities = [row[0] for row in rows]
 
-    plt.hist(prices, bins=50)
-    plt.xlabel('Price')
+    # Création de l'histogramme (couleurs, valeurs x,y et titre)
+    plt.hist(quantities, bins=10, color='blue', edgecolor='black')
+    plt.xlabel('Order Quantity')
     plt.ylabel('Frequency')
-    plt.title('Distribution of Product Prices')
+    plt.title('Distribution of Order Quantities')
 
-    plt.savefig('static/price_histogram.png', transparent=False)
+    # Sauvegarder en tant qu'image
+    plt.savefig('static/order_quantity_histogram.png', transparent=False)
     plt.close()
 
+    conn.close()
+
+# éxecution des graphiques dans la page html
 @app.route('/analytics')
 @login_required
 def product_share():
     generate_pie_chart()  
     generate_category_bar_chart()
-    generate_price_histogram()
+    generate_order_quantity_histogram()
     return render_template('analytics.html')
 
-
+# décorateur python qui enregistre les actions des utilisateurs en enregistrant leur identifiant et le nom de la fonction en cours
 logging.basicConfig(filename='user_actions.log', level=logging.INFO)
 
 def log_action(func):
@@ -583,6 +426,8 @@ def log_action(func):
         logging.info(f"User ID: {user_id}, Action: {action}")
         return func(*args, **kwargs)
     return wrapper
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1373,3 +1373,296 @@ INFO:werkzeug: * Detected change in 'C:\\Users\\pscyp\\OneDrive\\Documents\\Bure
 INFO:werkzeug: * Restarting with stat
 WARNING:werkzeug: * Debugger is active!
 INFO:werkzeug: * Debugger PIN: 105-320-900
+INFO:werkzeug: * Detected change in 'C:\\Users\\pscyp\\OneDrive\\Documents\\Bureau\\python_projects\\projet_python_app_web_fonc\\app.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 105-320-900
+INFO:werkzeug: * Detected change in 'C:\\Users\\pscyp\\OneDrive\\Documents\\Bureau\\python_projects\\projet_python_app_web_fonc\\models.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 105-320-900
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 105-320-900
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:14] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:15] "[36mGET /static/css/homebase_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:15] "[36mGET /static/images/homepage_vector_v1.svg HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:15] "GET /static/js/scripts.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:15] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:17] "GET /login HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:17] "[36mGET /static/css/homebase_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:17] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:24] "[32mPOST /login HTTP/1.1[0m" 302 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:24] "GET /dashboard HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:24] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:25] "[36mGET /static/images/customer-test.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:25] "[36mGET /static/images/product-test.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:25] "[36mGET /static/images/order-test.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:25] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:25] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:26] "GET /product_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:26] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:26] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:26] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:27] "GET /customer_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:27] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:27] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:27] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:27] "GET /order_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:28] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:28] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:28] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:35] "[32mPOST /add_order HTTP/1.1[0m" 302 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:36] "GET /order_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:36] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:36] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:36] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:40] "GET /customer_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:40] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:40] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:40] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:41] "GET /analytics HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:41] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:41] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:41] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:41] "GET /static/product_share.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:41] "GET /static/category_bar_chart.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:28:41] "GET /static/price_histogram.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:31:39] "GET /static/product_share.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:31:40] "GET /dashboard HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:31:41] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:31:41] "[36mGET /static/images/product-test.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:31:41] "[36mGET /static/images/customer-test.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:31:41] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:31:41] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:31:41] "[36mGET /static/images/order-test.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:31:42] "GET /product_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:31:43] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:31:43] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:31:43] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:31:59] "GET /customer_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:32:00] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:32:00] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:32:00] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:34:50] "GET /analytics HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:34:50] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:34:50] "GET /static/product_share.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:34:51] "GET /static/category_bar_chart.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:34:51] "GET /static/price_histogram.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:34:51] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:34:51] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:34:51] "GET /order_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:34:51] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:34:51] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:34:52] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:34:52] "GET /customer_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:34:52] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:34:53] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:34:53] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:34:54] "GET /product_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:34:54] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:34:54] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:34:54] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:34:55] "GET /dashboard HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:34:56] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:34:56] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:34:56] "[36mGET /static/images/product-test.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:34:56] "[36mGET /static/images/customer-test.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:34:56] "[36mGET /static/images/order-test.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:34:56] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:34:56] "GET /product_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:34:56] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:34:56] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 18:34:57] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug: * Detected change in 'C:\\Users\\pscyp\\OneDrive\\Documents\\Bureau\\python_projects\\projet_python_app_web_fonc\\models.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 105-320-900
+INFO:werkzeug: * Detected change in 'C:\\Users\\pscyp\\OneDrive\\Documents\\Bureau\\python_projects\\projet_python_app_web_fonc\\models.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 105-320-900
+INFO:werkzeug: * Detected change in 'C:\\Users\\pscyp\\OneDrive\\Documents\\Bureau\\python_projects\\projet_python_app_web_fonc\\models.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 105-320-900
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:30:34] "[32mPOST /update_product HTTP/1.1[0m" 302 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:30:34] "GET /product_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:30:34] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:30:34] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:30:34] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:30:42] "GET /order_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:30:42] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:30:42] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:30:43] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:30:48] "GET /product_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:30:48] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:30:48] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:30:48] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:30:49] "GET /customer_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:30:49] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:30:49] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:30:49] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:31:04] "[32mPOST /update_customer HTTP/1.1[0m" 302 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:31:04] "GET /customer_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:31:05] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:31:05] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:31:05] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:31:15] "[32mPOST /update_customer HTTP/1.1[0m" 302 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:31:15] "GET /customer_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:31:16] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:31:16] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:31:16] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:33:18] "GET /dashboard HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:33:18] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:33:18] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:33:19] "[36mGET /static/images/product-test.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:33:19] "[36mGET /static/images/customer-test.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:33:19] "[36mGET /static/images/order-test.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:33:19] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:33:20] "[32mGET /logout HTTP/1.1[0m" 302 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:33:21] "GET /login HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:33:21] "[36mGET /static/css/homebase_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:33:21] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:33:22] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:33:22] "[36mGET /static/css/homebase_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:33:22] "[36mGET /static/images/homepage_vector_v1.svg HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:33:22] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:39:52] "GET /login HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:39:52] "[36mGET /static/css/homebase_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 19:39:53] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug: * Detected change in 'C:\\Users\\pscyp\\OneDrive\\Documents\\Bureau\\python_projects\\projet_python_app_web_fonc\\models.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 105-320-900
+INFO:werkzeug: * Detected change in 'C:\\Users\\pscyp\\OneDrive\\Documents\\Bureau\\python_projects\\projet_python_app_web_fonc\\app.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 105-320-900
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 20:09:46] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 20:09:46] "[36mGET /static/css/homebase_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 20:09:46] "GET /static/images/homepage_vector_v1.svg HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 20:09:46] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug: * Detected change in 'C:\\Users\\pscyp\\OneDrive\\Documents\\Bureau\\python_projects\\projet_python_app_web_fonc\\app.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 105-320-900
+INFO:werkzeug: * Detected change in 'C:\\Users\\pscyp\\OneDrive\\Documents\\Bureau\\python_projects\\projet_python_app_web_fonc\\app.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 105-320-900
+INFO:werkzeug: * Detected change in 'C:\\Users\\pscyp\\OneDrive\\Documents\\Bureau\\python_projects\\projet_python_app_web_fonc\\app.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 105-320-900
+INFO:werkzeug: * Detected change in 'C:\\Users\\pscyp\\OneDrive\\Documents\\Bureau\\python_projects\\projet_python_app_web_fonc\\app.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 105-320-900
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 105-320-900
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:17] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:17] "[36mGET /static/css/homebase_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:17] "[36mGET /static/images/homepage_vector_v1.svg HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:17] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:19] "GET /login HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:19] "[36mGET /static/css/homebase_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:19] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:24] "[32mPOST /login HTTP/1.1[0m" 302 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:24] "GET /dashboard HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:24] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:25] "[36mGET /static/images/product-test.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:25] "[36mGET /static/images/order-test.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:25] "[36mGET /static/images/customer-test.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:25] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:25] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:26] "GET /order_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:26] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:26] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:26] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:29] "GET /customer_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:29] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:29] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:29] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:32] "GET /order_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:32] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:32] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:32] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:37] "GET /customer_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:37] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:37] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:37] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:38] "GET /product_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:38] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:38] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:38] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:40] "GET /customer_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:40] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:40] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:40] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:47] "GET /order_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:47] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:47] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:47] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:55] "[32mPOST /add_order HTTP/1.1[0m" 302 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:55] "GET /order_list HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:55] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:56] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:28:56] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug: * Detected change in 'C:\\Users\\pscyp\\OneDrive\\Documents\\Bureau\\python_projects\\projet_python_app_web_fonc\\app.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 105-320-900
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:29:05] "GET /analytics HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:29:05] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:29:05] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:29:05] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:29:05] "GET /static/price_histogram.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:29:05] "GET /static/category_bar_chart.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:29:05] "GET /static/product_share.png HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'C:\\Users\\pscyp\\OneDrive\\Documents\\Bureau\\python_projects\\projet_python_app_web_fonc\\app.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 105-320-900
+INFO:werkzeug: * Detected change in 'C:\\Users\\pscyp\\OneDrive\\Documents\\Bureau\\python_projects\\projet_python_app_web_fonc\\app.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 105-320-900
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:32:34] "GET /login HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:32:34] "[36mGET /static/css/homebase_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:32:34] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:32:40] "[32mPOST /login HTTP/1.1[0m" 302 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:32:40] "GET /dashboard HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:32:40] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:32:40] "[36mGET /static/images/product-test.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:32:40] "[36mGET /static/images/customer-test.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:32:40] "[36mGET /static/images/order-test.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:32:40] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:32:40] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:32:41] "GET /analytics HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:32:41] "[36mGET /static/css/base_style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:32:41] "[36mGET /static/images/user.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:32:41] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:32:41] "GET /static/order_quantity_histogram.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:32:41] "GET /static/product_share.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:32:41] "GET /static/category_bar_chart.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Nov/2024 21:33:44] "GET /static/order_quantity_histogram.png HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'C:\\Users\\pscyp\\OneDrive\\Documents\\Bureau\\python_projects\\projet_python_app_web_fonc\\app.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 105-320-900
+INFO:werkzeug: * Detected change in 'C:\\Users\\pscyp\\OneDrive\\Documents\\Bureau\\python_projects\\projet_python_app_web_fonc\\database_script.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 105-320-900
+INFO:werkzeug: * Detected change in 'C:\\Users\\pscyp\\OneDrive\\Documents\\Bureau\\python_projects\\projet_python_app_web_fonc\\app.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 105-320-900

@@ -1,3 +1,14 @@
+/** Fichier scripts.js
+ * Projet : Application Web Fonctionnelle
+ * Auteurs : Pierre-Sylvestre Cypré, Aboubacar Sidiki Doumbouya
+ * Date : 20 Novembre 2024
+ * Objectif et description : Javascript perméttant de cocher des cases, gérer les messages de confirmation, 
+ * populer les formulaires bootstrap pour la modification
+ * **/
+
+
+
+
 // Fermeture automatique des messages Flash
   document.addEventListener('DOMContentLoaded', function() {
       const alerts = document.querySelectorAll('.alert');
@@ -83,6 +94,7 @@ function toggleDeleteButton() {
     }
 }
 
+// Sélectionner toutes les cases
 function selectAllCheckboxesCustomers() {
     var selectAllCheckbox = document.getElementById('selectAll');
     var checkboxes = document.getElementsByName('customer_ids');
@@ -98,6 +110,7 @@ function selectAllCheckboxesCustomers() {
     }
 }
 
+// Insère les données existantes dans le modl bootstrap
 function populateModifyCustomer(button) {
     const data = button.dataset;
     document.getElementById('modify_customer_id').value = data.id;
@@ -121,6 +134,8 @@ function toggleDeleteOrderButton() {
     }
 }
 
+
+// Coche toutes les cases
 function selectAllCheckboxesOrders() {
     var selectAllCheckbox = document.getElementById('selectAll');
     var checkboxes = document.getElementsByName('order_ids');
@@ -130,6 +145,8 @@ function selectAllCheckboxesOrders() {
     }
 }
 
+
+// Met à jour la quantité maximale que l'utilisateur peut saisir dans le champ du formulaire quantité en fonction du stock
 function updateQuantityMax() {
     const productSelect = document.getElementById('product_id');
     const quantityInput = document.getElementById('quantity');
