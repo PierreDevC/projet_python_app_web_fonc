@@ -3,7 +3,6 @@
 {% block title %}Orders{% endblock %}
 
 {% block content %}
-
 <h2 class="text-white">Commandes</h2>
 <br>
 
@@ -16,9 +15,9 @@
 </button>
 
 <div class="collapse" id="filterOrders">
-    <form class="form-inline" action="/filter_orders" method="get"><br>
+    <form class="form-inline" action="{{ url_for('filter_orders') }}" method="get"><br>
         <input class="form-control w-50 mr-sm-2" type="search" name="search" placeholder="Rechercher avec le nom du client" aria-label="Search"><br>
-        <a href="/order_list" class="btn btn-secondary">Annuler la recherche</a>
+        <a href="{{ url_for('order_list') }}" class="btn btn-secondary">Annuler la recherche</a>
         <button class="btn btn-primary" type="submit">Rechercher</button>
     </form>
 </div>
@@ -30,18 +29,20 @@
             <th>Client</th>
             <th>Produit</th>
             <th>Quantité</th>
+            <th>Date</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         {% for order in orders %}
         <tr>
-            <td>{{ order.id }}</td>
-            <td>{{ order.first_name }} {{ order.last_name }}</td>
-            <td>{{ order.name }}</td>
-            <td>{{ order.quantity }}</td>
+            <td>{{ order['id'] }}</td>
+            <td>{{ order['first_name'] }} {{ order['last_name'] }}</td>
+            <td>{{ order['name'] }}</td>
+            <td>{{ order['quantity'] }}</td>
+            <td>{{ order['date_added'] }}</td>
             <td>
-                <form action="{{ url_for('delete_order', order_id=order.id) }}" method="POST" style="display: inline;">
+                <form action="{{ url_for('delete_order', order_id=order['id']) }}" method="POST" style="display: inline;">
                     <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette commande?')">
                         <i class="bi bi-trash-fill"></i>
                     </button>
@@ -67,7 +68,7 @@
                         <select class="form-select" name="customer_id" required>
                             <option value="">Sélectionnez un client</option>
                             {% for customer in customers %}
-                            <option value="{{ customer.id }}">{{ customer.first_name }} {{ customer.last_name }}</option>
+                            <option value="{{ customer['id'] }}">{{ customer['first_name'] }} {{ customer['last_name'] }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -76,8 +77,8 @@
                         <select class="form-select" name="product_id" id="product_id" onchange="updateQuantityMax()" required>
                             <option value="">Sélectionnez un produit</option>
                             {% for product in products %}
-                            <option value="{{ product.id }}" data-stock="{{ product.stock }}">
-                                {{ product.name }} (Stock: {{ product.stock }})
+                            <option value="{{ product['id'] }}" data-stock="{{ product['stock'] }}">
+                                {{ product['name'] }} (Stock: {{ product['stock'] }})
                             </option>
                             {% endfor %}
                         </select>
@@ -96,5 +97,9 @@
     </div>
 </div>
 
-<a href="/dashboard" class="buttons">Retourner au tableau de bord</a>
+<script>
+
+</script>
+
+<a href="{{ url_for('dashboard') }}" class="buttons">Retourner au tableau de bord</a>
 {% endblock %}

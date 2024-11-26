@@ -147,7 +147,11 @@ function selectAllCheckboxesOrders() {
 
 
 // Met à jour la quantité maximale que l'utilisateur peut saisir dans le champ du formulaire quantité en fonction du stock
-function updateQuantityMax() {
+
+/**
+ * ancienne fonction 
+ * 
+ * function updateQuantityMax() {
     const productSelect = document.getElementById('product_id');
     const quantityInput = document.getElementById('quantity');
     const selectedOption = productSelect.options[productSelect.selectedIndex];
@@ -156,4 +160,14 @@ function updateQuantityMax() {
     quantityInput.max = maxStock;
     quantityInput.value = Math.min(quantityInput.value, maxStock);
     document.getElementById('available_stock').textContent = maxStock;
+}
+ * **/
+
+
+function updateQuantityMax() {
+    const productSelect = document.getElementById('product_id');
+    const selectedOption = productSelect.options[productSelect.selectedIndex];
+    const stock = selectedOption.getAttribute('data-stock');
+    document.getElementById('available_stock').textContent = stock;
+    document.getElementById('quantity').max = stock;
 }

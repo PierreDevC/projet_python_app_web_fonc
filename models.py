@@ -255,26 +255,34 @@ class Orders(BaseModel):
     # prendre toutes les commandes en utilisant un join avec la table customers et produits (clé étrangère commune)
     @classmethod
     def get_all(cls):
-        
         conn = cls.get_db()
         cursor = conn.cursor()
         cursor.execute('''
-            SELECT o.*, c.first_name, c.last_name, p.name as product_name
+            SELECT 
+                o.id,
+                o.customer_id,
+                o.product_id,
+                o.quantity,
+                o.date_added,
+                c.first_name,
+                c.last_name,
+                p.name
             FROM orders o
             JOIN customers c ON o.customer_id = c.id
             JOIN products p ON o.product_id = p.id
+            ORDER BY o.date_added DESC
         ''')
         rows = cursor.fetchall()
         conn.close()
         return rows
-
+    
     # prendre la commande par id en utilisant un join avec la table customers et produits (clé étrangère commune)
     @classmethod
     def get_by_id(cls, id):
         conn = cls.get_db()
         cursor = conn.cursor()
         cursor.execute('''
-            SELECT o.*, c.first_name, c.last_name, p.name as product_name
+            SELECT o.*, c.first_name, c.last_name, p.name
             FROM orders o
             JOIN customers c ON o.customer_id = c.id
             JOIN products p ON o.product_id = p.id
@@ -283,7 +291,7 @@ class Orders(BaseModel):
         order = cursor.fetchone()
         conn.close()
         return order
-
+    
     # sauvegarder la commande dans la table orders (tout en prenant compte des foreign key qui font référence à)
     def save(self):
         conn = self.get_db()
@@ -294,7 +302,7 @@ class Orders(BaseModel):
                 customer_id INTEGER NOT NULL,
                 product_id INTEGER NOT NULL,
                 quantity INTEGER NOT NULL,
-                date_added TEXT NOT NULL DEFAULT CURRENT_DATE,
+                date_added TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (customer_id) REFERENCES customers (id),
                 FOREIGN KEY (product_id) REFERENCES products (id)
             )
@@ -323,7 +331,15 @@ class Orders(BaseModel):
         cursor = conn.cursor()
         
         query = '''
-            SELECT o.*, c.first_name, c.last_name, p.name as product_name
+            SELECT 
+                o.id,
+                o.customer_id,
+                o.product_id,
+                o.quantity,
+                o.date_added,
+                c.first_name,
+                c.last_name,
+                p.name
             FROM orders o
             JOIN customers c ON o.customer_id = c.id
             JOIN products p ON o.product_id = p.id
@@ -334,6 +350,7 @@ class Orders(BaseModel):
             query += " WHERE c.first_name LIKE ? OR c.last_name LIKE ?"
             params = [f"%{search}%", f"%{search}%"]
 
+        query += " ORDER BY o.date_added DESC"
         cursor.execute(query, params)
         rows = cursor.fetchall()
         conn.close()
